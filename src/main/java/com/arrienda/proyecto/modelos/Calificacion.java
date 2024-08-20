@@ -1,0 +1,24 @@
+package com.arrienda.proyecto.modelos;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+public class Calificacion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private float calificacion;
+    private String comentario;
+    private Usuario user;
+
+
+
+}
