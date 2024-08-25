@@ -1,14 +1,10 @@
 package com.arrienda.proyecto.controladores;
 
 import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.arrienda.proyecto.modelos.Arrendatario;
-import com.arrienda.proyecto.modelos.Calificacion;
-import com.arrienda.proyecto.modelos.Solicitud;
-import com.arrienda.proyecto.servicios.ServicioArrendatario;
+import com.arrienda.proyecto.modelos.*;
+import com.arrienda.proyecto.servicios.*;
 
 
 @RestController
@@ -34,8 +30,8 @@ public class ControllerArrendatario {
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public Arrendatario actualizarArrendador(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
-        return sevicioArrendatario.updateArrendatario(id, arrendatario);
+    public Arrendatario actualizarArrendatario(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
+        return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
         
     @GetMapping("/arrendatario/{id}/calificaciones")

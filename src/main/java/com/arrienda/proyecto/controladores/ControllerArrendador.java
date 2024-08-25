@@ -1,13 +1,10 @@
 package com.arrienda.proyecto.controladores;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.arrienda.proyecto.modelos.Arrendador;
-import com.arrienda.proyecto.servicios.ServicioArrendador;
+import com.arrienda.proyecto.modelos.*;
+import com.arrienda.proyecto.servicios.*;
 
 @RestController
 @RequestMapping("/api/arrendador")
@@ -26,18 +23,28 @@ public class ControllerArrendador {
         return servicioArrendador.traerArrendador(id);
     }
 
+    @GetMapping("/arrendador/{id}/calificaciones")
+    public List<Calificacion> getCalificaciones(@PathVariable Long id) {
+        return servicioArrendador.getCalificaciones(id);
+    }
+
+    @GetMapping("/arrendatario/{id}/solicitudes")
+    public List<Propiedad> getPropiedades(@PathVariable Long id) {
+        return servicioArrendador.getPropiedades(id);
+    }
+
     @PostMapping("/crearArrendador")
     public Arrendador crearArrendador(@RequestBody Arrendador arrendador) {
         return servicioArrendador.crearArrendador(arrendador);
     }
 
     @PutMapping("/actualizarArrendador/{id}")
-    public Arrendador actualizarArrendador(@PathVariable Integer id, @RequestBody Arrendador arrendador) {
-        return sevicioArrendador.actualizarArrendador(id, arrendador);
+    public Arrendador actualizarArrendador(@PathVariable Long id, @RequestBody Arrendador arrendador) {
+        return servicioArrendador.actualizarArrendador(id, arrendador);
     }
 
     @DeleteMapping("/eliminarArrendador/{id}")
-    public void eliminarArrendador(@PathVariable Integer id){
+    public void eliminarArrendador(@PathVariable Long id){
         servicioArrendador.eliminarArrendador(id);
     }
 

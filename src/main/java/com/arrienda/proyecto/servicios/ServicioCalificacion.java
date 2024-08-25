@@ -1,11 +1,8 @@
 package com.arrienda.proyecto.servicios;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.arrienda.proyecto.modelos.Calificacion;
 import com.arrienda.proyecto.repositorios.RepositorioCalificacion;
 

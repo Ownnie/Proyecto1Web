@@ -1,13 +1,10 @@
 package com.arrienda.proyecto.servicios;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.arrienda.proyecto.repositorios.RepositorioArrendatario;
-import com.arrienda.proyecto.modelos.Arrendatario;
-import com.arrienda.proyecto.modelos.Calificacion;
-import com.arrienda.proyecto.modelos.Solicitud;
+import com.arrienda.proyecto.modelos.*;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -32,7 +29,7 @@ public class ServicioArrendatario {
         return repositorioArrendatario.save(arrendatario);
     }
 
-    public Arrendatario updateArrendador (Long id, Arrendatario arrendatario){
+    public Arrendatario updateArrendatario (Long id, Arrendatario arrendatario){
         Arrendatario existingArrendador = repositorioArrendatario.findById(id).orElse(null);
 
         if (existingArrendador != null) {
@@ -41,7 +38,7 @@ public class ServicioArrendatario {
             existingArrendador.setContrasena(arrendatario.getContrasena());
             return repositorioArrendatario.save(existingArrendador);
         } else {
-            throw new EntityNotFoundException("Estudiante no encontrado"); //Arreglar esta 
+            throw new EntityNotFoundException("Arrendatario no encontrado"); //Arreglar esta 
         }
 
     }
