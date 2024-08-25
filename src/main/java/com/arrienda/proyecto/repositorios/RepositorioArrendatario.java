@@ -1,10 +1,10 @@
 package com.arrienda.proyecto.repositorios;
 
 import org.springframework.data.jpa.repository.*;
-
+import java.util.Optional;
 import com.arrienda.proyecto.modelos.Arrendatario;
 
 
 public interface RepositorioArrendatario extends JpaRepository<Arrendatario, Long> {
-    Arrendatario findByArrendatarioId(Long id);
+    Optional <Arrendatario> findById(Long id);
 }

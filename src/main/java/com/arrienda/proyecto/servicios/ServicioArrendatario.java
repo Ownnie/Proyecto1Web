@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.arrienda.proyecto.repositorios.RepositorioArrendatario;
@@ -22,7 +22,12 @@ public class ServicioArrendatario {
     }
 
     public Arrendatario getArrendatario(Long id) {
-        return repositorioArrendatario.findByArrendatarioId(id);
+        Optional<Arrendatario> existingArrendatario = repositorioArrendatario.findById(id);
+        if (existingArrendatario.isPresent()) {
+            return existingArrendatario.get();
+        } else {
+            return null;
+        }
     }
 
     public Arrendatario createArrendatario(Arrendatario arrendatario) {
@@ -52,13 +57,21 @@ public class ServicioArrendatario {
     }
 
     public List<Calificacion> getCalificaciones(Long id) {
-        Arrendatario existingArrendatario = repositorioArrendatario.findByArrendatarioId(id);
-        return existingArrendatario.getCalificaciones();
+        Optional<Arrendatario> existingArrendatario = repositorioArrendatario.findById(id);
+        if (existingArrendatario.isPresent()) {
+            return existingArrendatario.get().getCalificaciones();
+        } else {
+            return Collections.emptyList();
+        }
     }
-
+    
     public List<Solicitud> getSolicitudes(Long id) {
-        Arrendatario existingArrendatario = repositorioArrendatario.findByArrendatarioId(id);
-        return existingArrendatario.getSolicitudes();
+        Optional<Arrendatario> existingArrendatario = repositorioArrendatario.findById(id);
+        if (existingArrendatario.isPresent()) {
+            return existingArrendatario.get().getSolicitudes();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
 }

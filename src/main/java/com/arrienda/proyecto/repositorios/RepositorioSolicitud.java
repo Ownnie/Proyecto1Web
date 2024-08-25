@@ -1,13 +1,14 @@
 package com.arrienda.proyecto.repositorios;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.arrienda.proyecto.modelos.Solicitud;
 
 public interface RepositorioSolicitud extends JpaRepository<Solicitud, Long>{
 
-    Solicitud findBySolicitudId(Long id);
+    Optional<Solicitud> findById(Long id);
 
     List<Solicitud> findByStatus(int estado);
 

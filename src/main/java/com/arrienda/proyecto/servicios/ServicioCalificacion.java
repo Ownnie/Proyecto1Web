@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.List;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.arrienda.proyecto.modelos.Calificacion;
@@ -19,7 +19,8 @@ public class ServicioCalificacion {
 
     // Obtener una calificación por su ID
     public Calificacion traerCalificacionPorId(Long id) {
-        return repositorioCalificacion.findByCalificacionId(id);
+        Optional<Calificacion> calificacion = repositorioCalificacion.findById(id);
+        return calificacion.orElse(null); // Return null if not found, or handle it as needed
     }
 
     // Guardar una nueva calificación
