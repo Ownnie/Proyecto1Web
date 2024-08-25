@@ -7,7 +7,7 @@ import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.servicios.*;
 
 @RestController
-@RequestMapping("/api/arrendador")
+@RequestMapping("/arrendador")
 public class ControllerArrendador {
 
     @Autowired
@@ -28,7 +28,7 @@ public class ControllerArrendador {
         return servicioArrendador.getCalificaciones(id);
     }
 
-    @GetMapping("/arrendatario/{id}/solicitudes")
+    @GetMapping("/arrendador/{id}/solicitudes")
     public List<Propiedad> getPropiedades(@PathVariable Long id) {
         return servicioArrendador.getPropiedades(id);
     }
@@ -45,7 +45,7 @@ public class ControllerArrendador {
 
     @DeleteMapping("/eliminarArrendador/{id}")
 
-    public void eliminarArrendador(@PathVariable Long id){
+    public void eliminarArrendador(@PathVariable Long id) {
         servicioArrendador.eliminarArrendador(id);
     }
 

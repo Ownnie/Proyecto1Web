@@ -15,7 +15,7 @@ import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.servicios.*;
 
 @RestController
-@RequestMapping("/api/solicitud")
+@RequestMapping("/solicitud")
 public class ControllerSolicitud {
     @Autowired
     private ServicioSolicitud servicioSolicitud;
