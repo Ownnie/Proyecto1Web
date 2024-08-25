@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.modelos;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -42,12 +42,12 @@ public class Propiedad {
     protected int status;
 
     @OneToMany
-    private ArrayList<Calificacion> calificaciones;
+    private List<Calificacion> calificaciones;
 
     @ManyToOne
     private Arrendador propietario;
 
     @OneToMany
-    private ArrayList<Solicitud> solicitudes;
+    private List<Solicitud> solicitudes;
 
 }
