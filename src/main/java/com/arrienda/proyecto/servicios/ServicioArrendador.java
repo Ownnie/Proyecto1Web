@@ -22,9 +22,10 @@ public class ServicioArrendador {
         return repositorioArrendador.findAll();
     }
 
-    public Arrendador traerArrendador(Long id){
+    public Arrendador traerArrendador(Long id) {
         return repositorioArrendador.findByArrendadorId(id);
     }
+
 
     public List<Calificacion> getCalificaciones(Long id){
         Arrendador existingArrendador = repositorioArrendador.findByArrendadorId(id);
@@ -40,7 +41,7 @@ public class ServicioArrendador {
         return repositorioArrendador.save(arrendador);
     }
 
-    public Arrendador actualizarArrendador (Long id, Arrendador arrendador){
+    public Arrendador actualizarArrendador(Long id, Arrendador arrendador) {
         Arrendador existingArrendador = repositorioArrendador.findById(id).orElse(null);
 
         if (existingArrendador != null) {

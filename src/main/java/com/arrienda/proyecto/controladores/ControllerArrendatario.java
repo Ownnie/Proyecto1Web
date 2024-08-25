@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.servicios.*;
 
-
 @RestController
 @RequestMapping("/api/arrendatario")
 public class ControllerArrendatario {
@@ -20,7 +19,7 @@ public class ControllerArrendatario {
     }
 
     @GetMapping("/arrendatario/{id}")
-    public Arrendatario getArrendatario(@PathVariable Long id){
+    public Arrendatario getArrendatario(@PathVariable Long id) {
         return servicioArrendatario.getArrendatario(id);
     }
 
@@ -30,10 +29,16 @@ public class ControllerArrendatario {
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public Arrendatario actualizarArrendatario(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
+    public Arrendatario actualizarArrendador(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
         return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
-        
+
+    @DeleteMapping("/eliminarArrendador/{id}")
+    public void eliminarArrendatario(@PathVariable Long id) {
+        servicioArrendatario.eliminarArrendatario(id);
+
+    }
+
     @GetMapping("/arrendatario/{id}/calificaciones")
     public List<Calificacion> getCalificaciones(@PathVariable Long id) {
         return servicioArrendatario.getCalificaciones(id);
@@ -43,8 +48,5 @@ public class ControllerArrendatario {
     public List<Solicitud> getSolicitudes(@PathVariable Long id) {
         return servicioArrendatario.getSolicitudes(id);
     }
-        
-        
-    
 
 }

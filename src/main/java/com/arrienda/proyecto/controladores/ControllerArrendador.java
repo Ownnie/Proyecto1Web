@@ -44,6 +44,7 @@ public class ControllerArrendador {
     }
 
     @DeleteMapping("/eliminarArrendador/{id}")
+
     public void eliminarArrendador(@PathVariable Long id){
         servicioArrendador.eliminarArrendador(id);
     }
