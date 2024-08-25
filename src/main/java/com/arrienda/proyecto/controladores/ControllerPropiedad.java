@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.arrienda.proyecto.modelos.*;
+
+import com.arrienda.proyecto.dtos.DTOPropiedad;
 import com.arrienda.proyecto.servicios.ServicioPropiedad;
 
 @RestController
@@ -21,47 +22,47 @@ public class ControllerPropiedad {
     private ServicioPropiedad servicioPropiedad;
 
     @GetMapping("/propiedades")
-    public List<Propiedad> traerPropiedades() {
+    public List<DTOPropiedad> traerPropiedades() {
         return servicioPropiedad.traerPropiedades();
     }
 
     @GetMapping("/propiedad/{id}")
-    public Propiedad obtenerPropiedad(@PathVariable Long id) {
+    public DTOPropiedad obtenerPropiedad(@PathVariable Long id) {
         return servicioPropiedad.obtenerPropiedad(id);
     }
 
     @GetMapping("/camas/{camas}")
-    public List<Propiedad> obtenerPropiedadesPorCamas(@PathVariable int camas) {
+    public List<DTOPropiedad> obtenerPropiedadesPorCamas(@PathVariable int camas) {
         return servicioPropiedad.obtenerPropiedadesPorCamas(camas);
     }
 
     @GetMapping("/disponibles")
-    public List<Propiedad> obtenerPropiedadesDisponibles() {
+    public List<DTOPropiedad> obtenerPropiedadesDisponibles() {
         return servicioPropiedad.obtenerPropiedadesDisponibles();
     }
 
     @GetMapping("/cuartos/{cuartos}")
-    public List<Propiedad> obtenerPropiedadesPorCuartos(@PathVariable int cuartos) {
+    public List<DTOPropiedad> obtenerPropiedadesPorCuartos(@PathVariable int cuartos) {
         return servicioPropiedad.obtenerPropiedadesPorCuartos(cuartos);
     }
 
     @GetMapping("/area/{area}")
-    public List<Propiedad> obtenerPropiedadesPorArea(@PathVariable float area) {
+    public List<DTOPropiedad> obtenerPropiedadesPorArea(@PathVariable float area) {
         return servicioPropiedad.obtenerPropiedadesPorArea(area);
     }
 
     @GetMapping("/capacidad/{capacidad}")
-    public List<Propiedad> obtenerPropiedadesPorCapacidad(@PathVariable int capacidad) {
+    public List<DTOPropiedad> obtenerPropiedadesPorCapacidad(@PathVariable int capacidad) {
         return servicioPropiedad.obtenerPropiedadesPorCapacidad(capacidad);
     }
 
     @PostMapping("/crearPropiedad")
-    public Propiedad crearPropiedad(@RequestBody Propiedad propiedad) {
+    public DTOPropiedad crearPropiedad(@RequestBody DTOPropiedad propiedad) {
         return servicioPropiedad.crearPropiedad(propiedad);
     }
 
     @PutMapping("/actualizarPropiedad/{id}")
-    public Propiedad actualizarPropiedad(@PathVariable Long id, @RequestBody Propiedad propiedad) {
+    public DTOPropiedad actualizarPropiedad(@PathVariable Long id, @RequestBody DTOPropiedad propiedad) {
         return servicioPropiedad.actualizarPropiedad(id, propiedad);
     }
 

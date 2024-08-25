@@ -1,10 +1,13 @@
 package com.arrienda.proyecto.servicios;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
 import com.arrienda.proyecto.modelos.Calificacion;
 import com.arrienda.proyecto.repositorios.RepositorioCalificacion;
+import com.arrienda.proyecto.dtos.DTOCalificacion;
 
 @Service
 public class ServicioCalificacion {
@@ -12,35 +15,46 @@ public class ServicioCalificacion {
     @Autowired
     private RepositorioCalificacion repositorioCalificacion;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     // Obtener todas las calificaciones activas
-    public List<Calificacion> traerCalificaciones() {
-        return repositorioCalificacion.findAll();
+    public List<DTOCalificacion> traerCalificaciones() {
+        return repositorioCalificacion.findAll().stream()
+                .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
+                .collect(Collectors.toList());
     }
 
     // Obtener una calificación por su ID
-    public Calificacion traerCalificacionPorId(Long id) {
-        Optional<Calificacion> calificacion = repositorioCalificacion.findById(id);
-        return calificacion.orElse(null); // Return null if not found, or handle it as needed
+    public DTOCalificacion traerCalificacionPorId(Long id) {
+        Calificacion calificacion = repositorioCalificacion.findById(id)
+                .orElse(null); // Return null if not found, or handle it as needed
+        return modelMapper.map(calificacion, DTOCalificacion.class);
     }
 
     // Guardar una nueva calificación
-    public Calificacion guardarCalificacion(Calificacion calificacion) {
-        return repositorioCalificacion.save(calificacion);
+    public DTOCalificacion guardarCalificacion(DTOCalificacion dtoCalificacion) {
+        Calificacion calificacion = modelMapper.map(dtoCalificacion, Calificacion.class);
+        Calificacion savedCalificacion = repositorioCalificacion.save(calificacion);
+        return modelMapper.map(savedCalificacion, DTOCalificacion.class);
     }
 
     // Actualizar una calificación existente
-    public Calificacion actualizarCalificacion(Long id, Calificacion nuevaCalificacion) {
+    public DTOCalificacion actualizarCalificacion(Long id, DTOCalificacion dtoCalificacion) {
         return repositorioCalificacion.findById(id)
-                .map(calificacion -> {
-                    calificacion.setCalificacion(nuevaCalificacion.getCalificacion());
-                    calificacion.setComentario(nuevaCalificacion.getComentario());
-                    calificacion.setIdTipo(nuevaCalificacion.getIdTipo());
-                    calificacion.setIdCalificado(nuevaCalificacion.getIdCalificado());
-                    return repositorioCalificacion.save(calificacion);
+                .map(existingCalificacion -> {
+                    existingCalificacion.setCalificacion(dtoCalificacion.getCalificacion());
+                    existingCalificacion.setComentario(dtoCalificacion.getComentario());
+                    existingCalificacion.setIdTipo(dtoCalificacion.getIdTipo());
+                    existingCalificacion.setIdCalificado(dtoCalificacion.getIdCalificado());
+                    Calificacion updatedCalificacion = repositorioCalificacion.save(existingCalificacion);
+                    return modelMapper.map(updatedCalificacion, DTOCalificacion.class);
                 })
                 .orElseGet(() -> {
-                    nuevaCalificacion.setId(id);
-                    return repositorioCalificacion.save(nuevaCalificacion);
+                    Calificacion newCalificacion = modelMapper.map(dtoCalificacion, Calificacion.class);
+                    newCalificacion.setId(id);
+                    Calificacion savedCalificacion = repositorioCalificacion.save(newCalificacion);
+                    return modelMapper.map(savedCalificacion, DTOCalificacion.class);
                 });
     }
 

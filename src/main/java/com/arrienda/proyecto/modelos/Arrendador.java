@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.modelos;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.Where;
 import org.hibernate.annotations.SQLDelete;
@@ -21,7 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Where(clause = "status = 0")
-@SQLDelete(sql = "UPDATE application SET status = 1 WHERE id=?")
+@SQLDelete(sql = "UPDATE arrendador SET status = 1 WHERE id=?")
 public class Arrendador {
 
     @Id
@@ -34,9 +34,9 @@ public class Arrendador {
     protected int status;
 
     @OneToMany(mappedBy = "propietario")
-    private ArrayList<Propiedad> propiedades;
+    private List<Propiedad> propiedades;
 
     @OneToMany
-    protected ArrayList<Calificacion> calificaciones;
+    protected List<Calificacion> calificaciones;
 
 }

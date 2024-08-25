@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.arrienda.proyecto.modelos.*;
-import com.arrienda.proyecto.servicios.*;
+
+import com.arrienda.proyecto.dtos.DTOSolicitud;
+import com.arrienda.proyecto.servicios.ServicioSolicitud;
 
 @RestController
 @RequestMapping("/solicitud")
@@ -21,32 +22,32 @@ public class ControllerSolicitud {
     private ServicioSolicitud servicioSolicitud;
 
     @GetMapping("/solicitudes")
-    public List<Solicitud> getAllSolicitudes() {
+    public List<DTOSolicitud> getAllSolicitudes() {
         return servicioSolicitud.getAllSolicitudes();
     }
 
     @GetMapping("/solicitud/{id}")
-    public Solicitud getSolicitud(@PathVariable Long id) {
+    public DTOSolicitud getSolicitud(@PathVariable Long id) {
         return servicioSolicitud.getSolicitud(id);
     }
 
     @GetMapping("/solicitudes/estado/{estado}")
-    public List<Solicitud> getSolicitudesByEstado(@PathVariable int estado) {
+    public List<DTOSolicitud> getSolicitudesByEstado(@PathVariable int estado) {
         return servicioSolicitud.getSolicitudesByEstado(estado);
     }
 
     @GetMapping("/solicitudes/arrendatario/{arrendatarioId}")
-    public List<Solicitud> getSolicitudesByArrendatarioId(@PathVariable Long arrendatarioId) {
+    public List<DTOSolicitud> getSolicitudesByArrendatarioId(@PathVariable Long arrendatarioId) {
         return servicioSolicitud.getSolicitudesByArrendatarioId(arrendatarioId);
     }
 
     @PostMapping("/crearSolicitud")
-    public Solicitud crearSolicitud(@RequestBody Solicitud solicitud) {
+    public DTOSolicitud crearSolicitud(@RequestBody DTOSolicitud solicitud) {
         return servicioSolicitud.crearSolicitud(solicitud);
     }
 
     @PutMapping("/actualizarSolicitud/{id}")
-    public Solicitud actualizarSolicitud(@PathVariable Long id, @RequestBody Solicitud solicitud) {
+    public DTOSolicitud actualizarSolicitud(@PathVariable Long id, @RequestBody DTOSolicitud solicitud) {
         return servicioSolicitud.actualizarSolicitud(id, solicitud);
     }
 
