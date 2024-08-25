@@ -7,13 +7,13 @@ import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.servicios.*;
 
 @RestController
-@RequestMapping("/api/arrendatario")
+@RequestMapping("/arrendatario")
 public class ControllerArrendatario {
 
     @Autowired
     private ServicioArrendatario servicioArrendatario;
 
-    @GetMapping("/arrendatario")
+    @GetMapping("/arrendatarios")
     public List<Arrendatario> getAllArrendatarios() {
         return servicioArrendatario.getAllArrendatarios();
     }

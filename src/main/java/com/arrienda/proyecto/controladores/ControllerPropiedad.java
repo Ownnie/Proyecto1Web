@@ -15,7 +15,7 @@ import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.servicios.ServicioPropiedad;
 
 @RestController
-@RequestMapping("/api/propiedades")
+@RequestMapping("/propiedads")
 public class ControllerPropiedad {
     @Autowired
     private ServicioPropiedad servicioPropiedad;
@@ -25,7 +25,7 @@ public class ControllerPropiedad {
         return servicioPropiedad.traerPropiedades();
     }
 
-    @GetMapping("/propiedades/{id}")
+    @GetMapping("/propiedad/{id}")
     public Propiedad obtenerPropiedad(@PathVariable Long id) {
         return servicioPropiedad.obtenerPropiedad(id);
     }
