@@ -23,15 +23,15 @@ public class ServicioArrendador {
         return repositorioArrendador.findAll();
     }
 
-    public Arrendador traerArrendador(Long id){
+    public Arrendador traerArrendador(Long id) {
         return repositorioArrendador.findByArrendadorId(id);
     }
 
-    public Arrendador crearArrendador (Arrendador arrendador){
+    public Arrendador crearArrendador(Arrendador arrendador) {
         return repositorioArrendador.save(arrendador);
     }
 
-    public Arrendador actualizarArrendador (Long id, Arrendador arrendador){
+    public Arrendador actualizarArrendador(Long id, Arrendador arrendador) {
         Arrendador existingArrendador = repositorioArrendador.findById(id).orElse(null);
 
         if (existingArrendador != null) {
@@ -45,7 +45,7 @@ public class ServicioArrendador {
         }
     }
 
-    public void eliminarArrendador(Integer id) {
+    public void eliminarArrendador(Long id) {
         Arrendador existingArrendador = repositorioArrendador.findById(id).orElse(null);
         if (existingArrendador != null) {
             repositorioArrendador.delete(existingArrendador);

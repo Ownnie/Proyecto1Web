@@ -24,29 +24,38 @@ public class ServicioArrendatario {
         return repositorioArrendatario.findAll();
     }
 
-    public Arrendatario getArrendatario(Long id){
+    public Arrendatario getArrendatario(Long id) {
         return repositorioArrendatario.findByArrendatarioId(id);
     }
 
-    public Arrendatario createArrendatario (Arrendatario arrendatario){
+    public Arrendatario createArrendatario(Arrendatario arrendatario) {
         return repositorioArrendatario.save(arrendatario);
     }
 
-    public Arrendatario updateArrendador (Long id, Arrendatario arrendatario){
-        Arrendatario existingArrendador = repositorioArrendatario.findById(id).orElse(null);
+    public Arrendatario updateArrendatario(Long id, Arrendatario arrendatario) {
+        Arrendatario existingArrendatario = repositorioArrendatario.findById(id).orElse(null);
 
-        if (existingArrendador != null) {
-            existingArrendador.setNombre(arrendatario.getNombre());
-            existingArrendador.setUsuario(arrendatario.getUsuario());
-            existingArrendador.setContrasena(arrendatario.getContrasena());
-            return repositorioArrendatario.save(existingArrendador);
+        if (existingArrendatario != null) {
+            existingArrendatario.setNombre(arrendatario.getNombre());
+            existingArrendatario.setUsuario(arrendatario.getUsuario());
+            existingArrendatario.setContrasena(arrendatario.getContrasena());
+            return repositorioArrendatario.save(existingArrendatario);
         } else {
-            throw new EntityNotFoundException("Estudiante no encontrado"); //Arreglar esta 
+            throw new EntityNotFoundException("Estudiante no encontrado"); // Arreglar esta
         }
 
     }
 
-    public List<Calificacion> getCalificaciones(Long id){
+    public void eliminarArrendatario(Long id) {
+        Arrendatario existingArrendatario = repositorioArrendatario.findById(id).orElse(null);
+        if (existingArrendatario != null) {
+            repositorioArrendatario.delete(existingArrendatario);
+        } else {
+            throw new EntityNotFoundException("Estudiante no encontrado");
+        }
+    }
+
+    public List<Calificacion> getCalificaciones(Long id) {
         Arrendatario existingArrendatario = repositorioArrendatario.findByArrendatarioId(id);
         return existingArrendatario.getCalificaciones();
     }
@@ -55,6 +64,5 @@ public class ServicioArrendatario {
         Arrendatario existingArrendatario = repositorioArrendatario.findByArrendatarioId(id);
         return existingArrendatario.getSolicitudes();
     }
-
 
 }

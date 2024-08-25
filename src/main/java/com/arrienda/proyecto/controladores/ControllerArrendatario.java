@@ -10,7 +10,6 @@ import com.arrienda.proyecto.modelos.Calificacion;
 import com.arrienda.proyecto.modelos.Solicitud;
 import com.arrienda.proyecto.servicios.ServicioArrendatario;
 
-
 @RestController
 @RequestMapping("/api/arrendatario")
 public class ControllerArrendatario {
@@ -24,7 +23,7 @@ public class ControllerArrendatario {
     }
 
     @GetMapping("/arrendatario/{id}")
-    public Arrendatario getArrendatario(@PathVariable Long id){
+    public Arrendatario getArrendatario(@PathVariable Long id) {
         return servicioArrendatario.getArrendatario(id);
     }
 
@@ -35,9 +34,14 @@ public class ControllerArrendatario {
 
     @PutMapping("/actualizarArrendatario/{id}")
     public Arrendatario actualizarArrendador(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
-        return sevicioArrendatario.updateArrendatario(id, arrendatario);
+        return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
-        
+
+    @DeleteMapping("/eliminarArrendador/{id}")
+    public void eliminarArrendatario(@PathVariable Long id) {
+        servicioArrendatario.eliminarArrendatario(id);
+    }
+
     @GetMapping("/arrendatario/{id}/calificaciones")
     public List<Calificacion> getCalificaciones(@PathVariable Long id) {
         return servicioArrendatario.getCalificaciones(id);
@@ -47,8 +51,5 @@ public class ControllerArrendatario {
     public List<Solicitud> getSolicitudes(@PathVariable Long id) {
         return servicioArrendatario.getSolicitudes(id);
     }
-        
-        
-    
 
 }

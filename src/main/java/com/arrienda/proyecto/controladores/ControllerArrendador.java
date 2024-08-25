@@ -32,12 +32,12 @@ public class ControllerArrendador {
     }
 
     @PutMapping("/actualizarArrendador/{id}")
-    public Arrendador actualizarArrendador(@PathVariable Integer id, @RequestBody Arrendador arrendador) {
-        return sevicioArrendador.actualizarArrendador(id, arrendador);
+    public Arrendador actualizarArrendador(@PathVariable Long id, @RequestBody Arrendador arrendador) {
+        return servicioArrendador.actualizarArrendador(id, arrendador);
     }
 
     @DeleteMapping("/eliminarArrendador/{id}")
-    public void eliminarArrendador(@PathVariable Integer id){
+    public void eliminarArrendador(@PathVariable Long id) {
         servicioArrendador.eliminarArrendador(id);
     }
 
