@@ -1,14 +1,10 @@
 package com.arrienda.proyecto.controladores;
 
 import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.arrienda.proyecto.modelos.Arrendatario;
-import com.arrienda.proyecto.modelos.Calificacion;
-import com.arrienda.proyecto.modelos.Solicitud;
-import com.arrienda.proyecto.servicios.ServicioArrendatario;
+import com.arrienda.proyecto.modelos.*;
+import com.arrienda.proyecto.servicios.*;
 
 @RestController
 @RequestMapping("/api/arrendatario")
@@ -40,6 +36,7 @@ public class ControllerArrendatario {
     @DeleteMapping("/eliminarArrendador/{id}")
     public void eliminarArrendatario(@PathVariable Long id) {
         servicioArrendatario.eliminarArrendatario(id);
+
     }
 
     @GetMapping("/arrendatario/{id}/calificaciones")
