@@ -29,16 +29,15 @@ public class ServicioArrendatario {
         return repositorioArrendatario.save(arrendatario);
     }
 
-
-    public Arrendatario updateArrendatario (Long id, Arrendatario arrendatario){
-        Arrendatario existingArrendador = repositorioArrendatario.findById(id).orElse(null);
+    public Arrendatario updateArrendatario(Long id, Arrendatario arrendatario) {
+        Arrendatario existingArrendatario = repositorioArrendatario.findById(id).orElse(null);
         if (existingArrendatario != null) {
             existingArrendatario.setNombre(arrendatario.getNombre());
             existingArrendatario.setUsuario(arrendatario.getUsuario());
             existingArrendatario.setContrasena(arrendatario.getContrasena());
             return repositorioArrendatario.save(existingArrendatario);
         } else {
-            throw new EntityNotFoundException("Arrendatario no encontrado"); //Arreglar esta 
+            throw new EntityNotFoundException("Arrendatario no encontrado"); // Arreglar esta
         }
 
     }
