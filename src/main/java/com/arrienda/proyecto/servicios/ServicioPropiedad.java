@@ -23,7 +23,8 @@ public class ServicioPropiedad {
     }
 
     public Propiedad obtenerPropiedad(Long id) {
-        return repositorioPropiedad.findByPropiedadId(id);
+        Optional<Propiedad> propiedad = repositorioPropiedad.findById(id);
+        return propiedad.orElse(null);
     }
 
     public List<Propiedad> obtenerPropiedadesPorCamas(int camas) {

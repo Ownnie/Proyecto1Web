@@ -1,6 +1,8 @@
 package com.arrienda.proyecto.servicios;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.arrienda.proyecto.modelos.*;
@@ -23,18 +25,27 @@ public class ServicioArrendador {
     }
 
     public Arrendador traerArrendador(Long id) {
-        return repositorioArrendador.findByArrendadorId(id);
+        Optional<Arrendador> optionalArrendador = repositorioArrendador.findById(id);
+        return optionalArrendador.orElseThrow(() -> new RuntimeException("Arrendador not found"));
     }
 
 
-    public List<Calificacion> getCalificaciones(Long id){
-        Arrendador existingArrendador = repositorioArrendador.findByArrendadorId(id);
-        return existingArrendador.getCalificaciones();
+    public List<Calificacion> getCalificaciones(Long id) {
+        Optional<Arrendador> existingArrendador = repositorioArrendador.findById(id);
+        if (existingArrendador.isPresent()) {
+            return existingArrendador.get().getCalificaciones();
+        } else {
+            return Collections.emptyList(); 
+        }
     }
 
     public List<Propiedad> getPropiedades(Long id) {
-        Arrendador existingArrendador = repositorioArrendador.findByArrendadorId(id);
-        return existingArrendador.getPropiedades();
+        Optional<Arrendador> existingArrendador = repositorioArrendador.findById(id);
+        if (existingArrendador.isPresent()) {
+            return existingArrendador.get().getPropiedades();
+        } else {
+            throw new RuntimeException("Arrendador not found");
+        }
     }
 
     public Arrendador crearArrendador (Arrendador arrendador){

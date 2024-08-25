@@ -22,7 +22,8 @@ public class ServicioSolicitud {
     }
 
     public Solicitud getSolicitud(Long id){
-        return repositorioSolicitud.findBySolicitudId(id);
+        Optional <Solicitud> solicitud = repositorioSolicitud.findById(id);
+        return solicitud.orElse(null);
     }
 
     public List<Solicitud> getSolicitudesByEstado(int estado) {
