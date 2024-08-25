@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.modelos;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -34,9 +34,9 @@ public class Arrendatario {
     protected int status;
 
     @OneToMany(mappedBy = "arrendatario")
-    private ArrayList<Solicitud> solicitudes;
+    private List<Solicitud> solicitudes;
 
     @OneToMany
-    protected ArrayList<Calificacion> calificaciones;
+    protected List<Calificacion> calificaciones;
 
 }
