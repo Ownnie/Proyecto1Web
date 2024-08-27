@@ -1,10 +1,24 @@
 package com.arrienda.proyecto.controladores;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import com.arrienda.proyecto.modelos.*;
-import com.arrienda.proyecto.servicios.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.arrienda.proyecto.dtos.DTOArrendador;
+import com.arrienda.proyecto.dtos.DTOCalificacion;
+import com.arrienda.proyecto.dtos.DTOPropiedad;
+import com.arrienda.proyecto.servicios.ServicioArrendador;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/arrendador")
@@ -14,39 +28,50 @@ public class ControllerArrendador {
     private ServicioArrendador servicioArrendador;
 
     @GetMapping("/arrendadores")
-    public List<Arrendador> getAllArrendadores() {
+    public List<DTOArrendador> getAllArrendadores() {
         return servicioArrendador.traerArrendadores();
     }
 
     @GetMapping("/arrendador/{id}")
-    public Arrendador getArrendador(@PathVariable Long id) {
+    public DTOArrendador getArrendador(@PathVariable Long id) {
         return servicioArrendador.traerArrendador(id);
     }
 
     @GetMapping("/arrendador/{id}/calificaciones")
-    public List<Calificacion> getCalificaciones(@PathVariable Long id) {
+    public List<DTOCalificacion> getCalificaciones(@PathVariable Long id) {
         return servicioArrendador.getCalificaciones(id);
     }
 
     @GetMapping("/arrendador/{id}/solicitudes")
-    public List<Propiedad> getPropiedades(@PathVariable Long id) {
+    public List<DTOPropiedad> getPropiedades(@PathVariable Long id) {
         return servicioArrendador.getPropiedades(id);
     }
 
     @PostMapping("/crearArrendador")
-    public Arrendador crearArrendador(@RequestBody Arrendador arrendador) {
+    public DTOArrendador crearArrendador(@RequestBody DTOArrendador arrendador) {
         return servicioArrendador.crearArrendador(arrendador);
     }
 
     @PutMapping("/actualizarArrendador/{id}")
-    public Arrendador actualizarArrendador(@PathVariable Long id, @RequestBody Arrendador arrendador) {
+    public DTOArrendador actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendador arrendador) {
         return servicioArrendador.actualizarArrendador(id, arrendador);
     }
-
+/* 
     @DeleteMapping("/eliminarArrendador/{id}")
-
     public void eliminarArrendador(@PathVariable Long id) {
         servicioArrendador.eliminarArrendador(id);
     }
+        */
 
+    @DeleteMapping("/eliminarArrendador/{id}")
+    public ResponseEntity<String> eliminarArrendador(@PathVariable Long id) {
+        try {
+            servicioArrendador.eliminarArrendador(id);
+            return ResponseEntity.ok("Arrendador eliminado con éxito.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).body("Arrendador no encontrado.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al eliminar el arrendador.");
+        }
+    }
 }

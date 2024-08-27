@@ -1,62 +1,74 @@
 package com.arrienda.proyecto.servicios;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.arrienda.proyecto.modelos.*;
-import com.arrienda.proyecto.repositorios.*;
+
+import com.arrienda.proyecto.dtos.DTOSolicitud;
+import com.arrienda.proyecto.modelos.Solicitud;
+import com.arrienda.proyecto.repositorios.RepositorioSolicitud;
 
 @Service
 public class ServicioSolicitud {
 
-     private final RepositorioSolicitud repositorioSolicitud;
+    @Autowired
+    private RepositorioSolicitud repositorioSolicitud;
 
     @Autowired
-    public ServicioSolicitud(RepositorioSolicitud repositorioSolicitud) {
-        this.repositorioSolicitud = repositorioSolicitud;
+    private ModelMapper modelMapper;
+
+    // Obtener todas las solicitudes
+    public List<DTOSolicitud> getAllSolicitudes() {
+        return repositorioSolicitud.findAll().stream()
+                .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Solicitud> getAllSolicitudes() {
-        return repositorioSolicitud.findAll();
+    // Obtener una solicitud por su ID
+    public DTOSolicitud getSolicitud(Long id) {
+        Solicitud solicitud = repositorioSolicitud.findById(id).orElse(null);
+        return solicitud != null ? modelMapper.map(solicitud, DTOSolicitud.class) : null;
     }
 
-    public Solicitud getSolicitud(Long id){
-        Optional <Solicitud> solicitud = repositorioSolicitud.findById(id);
-        return solicitud.orElse(null);
+    // Obtener solicitudes por estado
+    public List<DTOSolicitud> getSolicitudesByEstado(int estado) {
+        return repositorioSolicitud.findByStatus(estado).stream()
+                .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Solicitud> getSolicitudesByEstado(int estado) {
-        return repositorioSolicitud.findByStatus(estado);
+    // Obtener solicitudes por ID de arrendatario
+    public List<DTOSolicitud> getSolicitudesByArrendatarioId(Long arrendatarioId) {
+        return repositorioSolicitud.findByArrendatarioId(arrendatarioId).stream()
+                .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Solicitud> getSolicitudesByArrendatarioId(Long arrendatarioId) {
-        return repositorioSolicitud.findByArrendatarioId(arrendatarioId);
+    // Crear una nueva solicitud
+    public DTOSolicitud crearSolicitud(DTOSolicitud dtoSolicitud) {
+        Solicitud solicitud = modelMapper.map(dtoSolicitud, Solicitud.class);
+        Solicitud savedSolicitud = repositorioSolicitud.save(solicitud);
+        return modelMapper.map(savedSolicitud, DTOSolicitud.class);
     }
 
-    public Solicitud crearSolicitud (Solicitud solicitud){
-        return repositorioSolicitud.save(solicitud);
-    }
-
-    public Solicitud actualizarSolicitud(Long id, Solicitud solicitud) {
-        Optional<Solicitud> solicitudExistente = repositorioSolicitud.findById(id);
-        if (solicitudExistente.isPresent()) {
-            Solicitud actualizada = solicitudExistente.get();
-            actualizada.setFechaLlegada(solicitud.getFechaLlegada());
-            actualizada.setFechaPartida(solicitud.getFechaPartida());
-            actualizada.setAceptacion(solicitud.isAceptacion());
-            actualizada.setCantidadPersonas(solicitud.getCantidadPersonas());
-            actualizada.setStatus(solicitud.getStatus());
-            actualizada.setPropiedad(solicitud.getPropiedad());
-            actualizada.setArrendatario(solicitud.getArrendatario());
-            return repositorioSolicitud.save(actualizada);
-        } else {
-            throw new RuntimeException("Solicitud no encontrada con id " + id);
-        }
+    // Actualizar una solicitud existente
+    public DTOSolicitud actualizarSolicitud(Long id, DTOSolicitud dtoSolicitud) {
+        return repositorioSolicitud.findById(id)
+                .map(existingSolicitud -> {
+                    modelMapper.map(dtoSolicitud, existingSolicitud);
+                    Solicitud updatedSolicitud = repositorioSolicitud.save(existingSolicitud);
+                    return modelMapper.map(updatedSolicitud, DTOSolicitud.class);
+                })
+                .orElseThrow(() -> new RuntimeException("Solicitud not found with id: " + id));
     }
     
+    
+
+    // Eliminar una solicitud
     public void eliminarSolicitud(Long id) {
         repositorioSolicitud.deleteById(id);
     }
-
 }

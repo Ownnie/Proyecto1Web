@@ -1,87 +1,111 @@
 package com.arrienda.proyecto.servicios;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.modelmapper.ModelMapper;
+import com.arrienda.proyecto.dtos.DTOPropiedad;
 import com.arrienda.proyecto.modelos.Propiedad;
 import com.arrienda.proyecto.repositorios.RepositorioPropiedad;
 
 @Service
 public class ServicioPropiedad {
 
-    private final RepositorioPropiedad repositorioPropiedad;
+    @Autowired
+    private RepositorioPropiedad repositorioPropiedad;
 
     @Autowired
-    public ServicioPropiedad(RepositorioPropiedad repositorioPropiedad) {
-        this.repositorioPropiedad = repositorioPropiedad;
+    private ModelMapper modelMapper;
+
+    // Obtener todas las propiedades
+    public List<DTOPropiedad> traerPropiedades() {
+        return repositorioPropiedad.findAll().stream()
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Propiedad> traerPropiedades() {
-        return repositorioPropiedad.findAll();
+    // Obtener una propiedad por su ID
+    public DTOPropiedad obtenerPropiedad(Long id) {
+        Propiedad propiedad = repositorioPropiedad.findById(id).orElse(null);
+        return modelMapper.map(propiedad, DTOPropiedad.class);
     }
 
-    public Propiedad obtenerPropiedad(Long id) {
-        Optional<Propiedad> propiedad = repositorioPropiedad.findById(id);
-        return propiedad.orElse(null);
-    }
-
-    public List<Propiedad> obtenerPropiedadesPorCamas(int camas) {
+    // Obtener propiedades por camas
+    public List<DTOPropiedad> obtenerPropiedadesPorCamas(int camas) {
         return repositorioPropiedad.findAll().stream()
                 .filter(propiedad -> propiedad.getCamas() == camas)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
 
-    public List<Propiedad> obtenerPropiedadesDisponibles() {
+    // Obtener propiedades disponibles
+    public List<DTOPropiedad> obtenerPropiedadesDisponibles() {
         return repositorioPropiedad.findAll().stream()
                 .filter(Propiedad::isDisponible)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
 
-    public List<Propiedad> obtenerPropiedadesPorCuartos(int cuartos) {
+    // Obtener propiedades por cuartos
+    public List<DTOPropiedad> obtenerPropiedadesPorCuartos(int cuartos) {
         return repositorioPropiedad.findAll().stream()
                 .filter(propiedad -> propiedad.getCuartos() == cuartos)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
 
-    public List<Propiedad> obtenerPropiedadesPorArea(float area) {
+    // Obtener propiedades por área
+    public List<DTOPropiedad> obtenerPropiedadesPorArea(float area) {
         return repositorioPropiedad.findAll().stream()
                 .filter(propiedad -> propiedad.getArea() == area)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
 
-    public List<Propiedad> obtenerPropiedadesPorCapacidad(int capacidad) {
+    // Obtener propiedades por capacidad
+    public List<DTOPropiedad> obtenerPropiedadesPorCapacidad(int capacidad) {
         return repositorioPropiedad.findAll().stream()
                 .filter(propiedad -> propiedad.getCapacidad() == capacidad)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
 
-    public Propiedad crearPropiedad(Propiedad propiedad) {
-        return repositorioPropiedad.save(propiedad);
+    // Crear una nueva propiedad
+    public DTOPropiedad crearPropiedad(DTOPropiedad dtoPropiedad) {
+        Propiedad propiedad = modelMapper.map(dtoPropiedad, Propiedad.class);
+        Propiedad savedPropiedad = repositorioPropiedad.save(propiedad);
+        return modelMapper.map(savedPropiedad, DTOPropiedad.class);
     }
 
-    public Propiedad actualizarPropiedad(Long id, Propiedad propiedad) {
-        Optional<Propiedad> propiedadExistente = repositorioPropiedad.findById(id);
-        if (propiedadExistente.isPresent()) {
-            Propiedad actualizada = propiedadExistente.get();
-            actualizada.setNombre(propiedad.getNombre());
-            actualizada.setUbicacion(propiedad.getUbicacion());
-            actualizada.setParqueadero(propiedad.isParqueadero());
-            actualizada.setPiscina(propiedad.isPiscina());
-            actualizada.setCuartos(propiedad.getCuartos());
-            actualizada.setCamas(propiedad.getCamas());
-            actualizada.setArea(propiedad.getArea());
-            actualizada.setCapacidad(propiedad.getCapacidad());
-            actualizada.setDisponible(propiedad.isDisponible());
-            actualizada.setPrecioXnoche(propiedad.getPrecioXnoche());
-            actualizada.setStatus(propiedad.getStatus());
-            return repositorioPropiedad.save(actualizada);
-        } else {
-            throw new RuntimeException("Propiedad no encontrada con id " + id);
-        }
+    // Actualizar una propiedad existente
+    public DTOPropiedad actualizarPropiedad(Long id, DTOPropiedad dtoPropiedad) {
+        return repositorioPropiedad.findById(id)
+                .map(existingPropiedad -> {
+                    existingPropiedad.setNombre(dtoPropiedad.getNombre());
+                    existingPropiedad.setUbicacion(dtoPropiedad.getUbicacion());
+                    existingPropiedad.setParqueadero(dtoPropiedad.isParqueadero());
+                    existingPropiedad.setPiscina(dtoPropiedad.isPiscina());
+                    existingPropiedad.setCuartos(dtoPropiedad.getCuartos());
+                    existingPropiedad.setCamas(dtoPropiedad.getCamas());
+                    existingPropiedad.setArea(dtoPropiedad.getArea());
+                    existingPropiedad.setCapacidad(dtoPropiedad.getCapacidad());
+                    existingPropiedad.setDisponible(dtoPropiedad.isDisponible());
+                    existingPropiedad.setPrecioXnoche(dtoPropiedad.getPrecioXnoche());
+                    existingPropiedad.setStatus(dtoPropiedad.getStatus());
+                    Propiedad updatedPropiedad = repositorioPropiedad.save(existingPropiedad);
+                    return modelMapper.map(updatedPropiedad, DTOPropiedad.class);
+                })
+                .orElseGet(() -> {
+                    Propiedad newPropiedad = modelMapper.map(dtoPropiedad, Propiedad.class);
+                    newPropiedad.setId(id);
+                    Propiedad savedPropiedad = repositorioPropiedad.save(newPropiedad);
+                    return modelMapper.map(savedPropiedad, DTOPropiedad.class);
+                });
     }
 
+    // Eliminar una propiedad
     public void eliminarPropiedad(Long id) {
         repositorioPropiedad.deleteById(id);
     }
