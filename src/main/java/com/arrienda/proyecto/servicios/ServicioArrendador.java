@@ -5,9 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.arrienda.proyecto.dtos.DTOArrendador;
-import com.arrienda.proyecto.dtos.DTOCalificacion;
-import com.arrienda.proyecto.dtos.DTOPropiedad;
+import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -55,11 +53,14 @@ public class ServicioArrendador {
     }
 
     public DTOArrendador crearArrendador(DTOArrendador dtoArrendador) {
+        if (repositorioArrendador.existsByUsuario(dtoArrendador.getUsuario())) {
+            throw new IllegalArgumentException("El arrendador con este usuario ya existe.");
+        }
+
         Arrendador arrendador = modelMapper.map(dtoArrendador, Arrendador.class);
         Arrendador savedArrendador = repositorioArrendador.save(arrendador);
         return modelMapper.map(savedArrendador, DTOArrendador.class);
     }
-
 
     public DTOArrendador actualizarArrendador(Long id, DTOArrendador dtoArrendador) {
         Arrendador existingArrendador = repositorioArrendador.findById(id)

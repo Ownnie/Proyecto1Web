@@ -3,7 +3,7 @@ package com.arrienda.proyecto.controladores;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.arrienda.proyecto.modelos.*;
+import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.servicios.*;
 
 @RestController
@@ -14,22 +14,22 @@ public class ControllerArrendatario {
     private ServicioArrendatario servicioArrendatario;
 
     @GetMapping("/arrendatarios")
-    public List<Arrendatario> getAllArrendatarios() {
+    public List<DTOArrendatario> getAllArrendatarios() {
         return servicioArrendatario.getAllArrendatarios();
     }
 
     @GetMapping("/arrendatario/{id}")
-    public Arrendatario getArrendatario(@PathVariable Long id) {
+    public DTOArrendatario getArrendatario(@PathVariable Long id) {
         return servicioArrendatario.getArrendatario(id);
     }
 
     @PostMapping("/crearArrendatario")
-    public Arrendatario crearArrendatario(@RequestBody Arrendatario arrendatario) {
+    public DTOArrendatario crearArrendatario(@RequestBody DTOArrendatario arrendatario) {
         return servicioArrendatario.createArrendatario(arrendatario);
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public Arrendatario actualizarArrendador(@PathVariable Long id, @RequestBody Arrendatario arrendatario) {
+    public DTOArrendatario actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendatario arrendatario) {
         return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
 
@@ -40,12 +40,12 @@ public class ControllerArrendatario {
     }
 
     @GetMapping("/arrendatario/{id}/calificaciones")
-    public List<Calificacion> getCalificaciones(@PathVariable Long id) {
+    public List<DTOCalificacion> getCalificaciones(@PathVariable Long id) {
         return servicioArrendatario.getCalificaciones(id);
     }
 
     @GetMapping("/arrendatario/{id}/solicitudes")
-    public List<Solicitud> getSolicitudes(@PathVariable Long id) {
+    public List<DTOSolicitud> getSolicitudes(@PathVariable Long id) {
         return servicioArrendatario.getSolicitudes(id);
     }
 

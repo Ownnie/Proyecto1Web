@@ -7,4 +7,6 @@ import com.arrienda.proyecto.modelos.Arrendatario;
 
 public interface RepositorioArrendatario extends JpaRepository<Arrendatario, Long> {
     Optional <Arrendatario> findById(Long id);
+
+    boolean existsByUsuario(String usuario);
 }

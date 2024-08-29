@@ -15,5 +15,6 @@ public class DTOArrendador {
     protected String usuario;
     protected String contrasena;
     private String nombre;
+    private String correo;
     protected int status;
 }

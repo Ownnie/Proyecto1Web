@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -17,6 +16,7 @@ public class DTOArrendatario {
     protected String contrasena;
     private String nombre;
     protected int status;
+    private String correo;
     private List<DTOPropiedad> propiedades;
     protected List<DTOCalificacion> calificaciones;
 }
