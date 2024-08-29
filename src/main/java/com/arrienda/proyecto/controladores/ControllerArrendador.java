@@ -30,7 +30,7 @@ public class ControllerArrendador {
         return servicioArrendador.getCalificaciones(id);
     }
 
-    @GetMapping("/arrendador/{id}/solicitudes")
+    @GetMapping("/arrendador/{id}/propiedades")
     public List<DTOPropiedad> getPropiedades(@PathVariable Long id) {
         return servicioArrendador.getPropiedades(id);
     }
