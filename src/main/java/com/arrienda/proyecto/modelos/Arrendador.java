@@ -28,9 +28,9 @@ public class Arrendador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    protected String usuario;
-    protected String contrasena;
-    protected String nombre;
+    private String usuario;
+    private String contrasena;
+    private String nombre;
     protected int status;
 
     @OneToMany(mappedBy = "propietario")

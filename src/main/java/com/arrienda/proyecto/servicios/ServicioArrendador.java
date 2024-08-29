@@ -1,21 +1,15 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.arrienda.proyecto.dtos.DTOArrendador;
 import com.arrienda.proyecto.dtos.DTOCalificacion;
 import com.arrienda.proyecto.dtos.DTOPropiedad;
-import com.arrienda.proyecto.dtos.DTOSolicitud;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
-
 import jakarta.persistence.EntityNotFoundException;
 
 @Service

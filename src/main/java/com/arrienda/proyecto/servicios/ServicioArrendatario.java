@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.arrienda.proyecto.repositorios.RepositorioArrendatario;
 import com.arrienda.proyecto.modelos.*;
-
 import jakarta.persistence.EntityNotFoundException;
 
 @Service

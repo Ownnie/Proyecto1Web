@@ -1,7 +1,6 @@
 package com.arrienda.proyecto.dtos;
 
 import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,32 +19,4 @@ public class DTOSolicitud {
     private int status;
     private DTOPropiedad propiedad; 
     private DTOArrendatario arrendatario; 
-
-    public Date getFechaLlegada() {
-        return fechaLlegada;
-    }
-
-    public Date getFechaPartida() {
-        return fechaPartida;
-    }
-
-    public boolean isAceptacion() {
-        return aceptacion;
-    }
-
-    public int getCantidadPersonas() {
-        return cantidadPersonas;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public DTOPropiedad getPropiedad() {
-        return propiedad;
-    }
-
-    public DTOArrendatario getArrendatario() {
-        return arrendatario;
-    }
 }

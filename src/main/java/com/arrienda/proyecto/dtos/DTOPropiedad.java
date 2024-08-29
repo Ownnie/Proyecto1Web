@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DTOPropiedad {
     private long id;
-
     private String nombre;
     private String ubicacion;
     private boolean parqueadero;
