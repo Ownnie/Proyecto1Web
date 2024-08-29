@@ -1,23 +1,11 @@
 package com.arrienda.proyecto.controladores;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.arrienda.proyecto.dtos.DTOArrendador;
-import com.arrienda.proyecto.dtos.DTOCalificacion;
-import com.arrienda.proyecto.dtos.DTOPropiedad;
+import org.springframework.web.bind.annotation.*;
+import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.servicios.ServicioArrendador;
-
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
@@ -56,12 +44,6 @@ public class ControllerArrendador {
     public DTOArrendador actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendador arrendador) {
         return servicioArrendador.actualizarArrendador(id, arrendador);
     }
-/* 
-    @DeleteMapping("/eliminarArrendador/{id}")
-    public void eliminarArrendador(@PathVariable Long id) {
-        servicioArrendador.eliminarArrendador(id);
-    }
-        */
 
     @DeleteMapping("/eliminarArrendador/{id}")
     public ResponseEntity<String> eliminarArrendador(@PathVariable Long id) {

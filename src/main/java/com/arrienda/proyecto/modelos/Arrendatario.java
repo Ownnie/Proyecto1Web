@@ -29,6 +29,7 @@ public class Arrendatario {
     private String nombre;
     private String usuario;
     private String contrasena;
+    private String correo;
     protected int status;
 
     @OneToMany(mappedBy = "arrendatario")
