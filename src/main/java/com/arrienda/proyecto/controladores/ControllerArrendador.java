@@ -2,6 +2,7 @@ package com.arrienda.proyecto.controladores;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.arrienda.proyecto.dtos.*;
@@ -41,9 +42,9 @@ public class ControllerArrendador {
             servicioArrendador.eliminarArrendador(id);
             return ResponseEntity.ok("Arrendador eliminado con éxito.");
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).body("Arrendador no encontrado.");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al eliminar el arrendador.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Arrendador no encontrado.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el arrendador.");
         }
     }
 }
