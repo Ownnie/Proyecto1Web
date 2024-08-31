@@ -47,6 +47,13 @@ public class ServicioSolicitud {
                 .collect(Collectors.toList());
     }
 
+    // Obtener solicitudes por ID de propiedad
+    public List<DTOSolicitud> getSolicitudesByPropiedadId(Long propiedadId) {
+        return repositorioSolicitud.findByPropiedadId(propiedadId).stream()
+                .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
+                .collect(Collectors.toList());
+    }
+
     // Crear una nueva solicitud
     public DTOSolicitud crearSolicitud(DTOSolicitud dtoSolicitud) {
         Solicitud solicitud = modelMapper.map(dtoSolicitud, Solicitud.class);
@@ -64,8 +71,6 @@ public class ServicioSolicitud {
                 })
                 .orElseThrow(() -> new RuntimeException("Solicitud not found with id: " + id));
     }
-    
-    
 
     // Eliminar una solicitud
     public void eliminarSolicitud(Long id) {

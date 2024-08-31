@@ -36,22 +36,6 @@ public class ServicioArrendador {
         return modelMapper.map(arrendador, DTOArrendador.class);
     }
 
-    public List<DTOCalificacion> getCalificaciones(Long id) {
-        Arrendador arrendador = repositorioArrendador.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Arrendador no encontrado"));
-        return arrendador.getCalificaciones().stream()
-                .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
-                .collect(Collectors.toList());
-    }    
-
-    public List<DTOPropiedad> getPropiedades(Long id) {
-        Arrendador arrendador = repositorioArrendador.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Arrendador no encontrado"));
-        return arrendador.getPropiedades().stream()
-                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
-                .collect(Collectors.toList());
-    }
-
     public DTOArrendador crearArrendador(DTOArrendador dtoArrendador) {
         if (repositorioArrendador.existsByUsuario(dtoArrendador.getUsuario())) {
             throw new IllegalArgumentException("El arrendador con este usuario ya existe.");

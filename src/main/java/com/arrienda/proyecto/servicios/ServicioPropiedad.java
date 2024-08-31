@@ -1,7 +1,6 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +70,14 @@ public class ServicioPropiedad {
                 .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
     }
+
+    // Obtener propiedades del propietario
+    public List<DTOPropiedad> getPropiedades(Long id) {
+        return repositorioPropiedad.findAll().stream()
+                .filter(propiedad -> propiedad.getPropietario().getId() == id)
+                .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
+                .collect(Collectors.toList());
+        }
 
     // Crear una nueva propiedad
     public DTOPropiedad crearPropiedad(DTOPropiedad dtoPropiedad) {

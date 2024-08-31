@@ -25,16 +25,6 @@ public class ControllerArrendador {
         return servicioArrendador.traerArrendador(id);
     }
 
-    @GetMapping("/arrendador/{id}/calificaciones")
-    public List<DTOCalificacion> getCalificaciones(@PathVariable Long id) {
-        return servicioArrendador.getCalificaciones(id);
-    }
-
-    @GetMapping("/arrendador/{id}/propiedades")
-    public List<DTOPropiedad> getPropiedades(@PathVariable Long id) {
-        return servicioArrendador.getPropiedades(id);
-    }
-
     @PostMapping("/crearArrendador")
     public DTOArrendador crearArrendador(@RequestBody DTOArrendador arrendador) {
         return servicioArrendador.crearArrendador(arrendador);

@@ -41,6 +41,11 @@ public class ControllerSolicitud {
         return servicioSolicitud.getSolicitudesByArrendatarioId(arrendatarioId);
     }
 
+    @GetMapping("/solicitudes/propiedad/{propiedadId}")
+    public List<DTOSolicitud> getSolicitudesByPropiedadId(@PathVariable Long propiedadId) {
+        return servicioSolicitud.getSolicitudesByPropiedadId(propiedadId);
+    }
+
     @PostMapping("/crearSolicitud")
     public DTOSolicitud crearSolicitud(@RequestBody DTOSolicitud solicitud) {
         return servicioSolicitud.crearSolicitud(solicitud);

@@ -61,20 +61,4 @@ public class ServicioArrendatario {
                 repositorioArrendatario.delete(existingArrendatario);
     }
 
-    public List<DTOCalificacion> getCalificaciones(Long id) {
-        Arrendatario arrendatario = repositorioArrendatario.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
-        return arrendatario.getCalificaciones().stream()
-                .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
-                .collect(Collectors.toList());
-    }    
-
-    public List<DTOSolicitud> getSolicitudes(Long id) {
-        Arrendatario arrendatario = repositorioArrendatario.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
-        return arrendatario.getSolicitudes().stream()
-                .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
-                .collect(Collectors.toList());
-    }
-
 }

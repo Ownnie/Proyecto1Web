@@ -31,6 +31,14 @@ public class ServicioCalificacion {
                 .orElse(null); // Return null if not found, or handle it as needed
         return modelMapper.map(calificacion, DTOCalificacion.class);
     }
+    
+    // Obtener las calificaciones de un arrendador, arrendatario o  propiedad
+    public List<DTOCalificacion> getCalificaciones(Long id, int tipoId) {
+        List<Calificacion> calificaciones = repositorioCalificacion.findByIdCalificadoAndIdTipo(id, tipoId);
+        return calificaciones.stream()
+                .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
+                .collect(Collectors.toList());
+    }
 
     // Guardar una nueva calificación
     public DTOCalificacion guardarCalificacion(DTOCalificacion dtoCalificacion) {

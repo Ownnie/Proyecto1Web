@@ -56,6 +56,11 @@ public class ControllerPropiedad {
         return servicioPropiedad.obtenerPropiedadesPorCapacidad(capacidad);
     }
 
+    @GetMapping("/arrendador/{id}/propiedades")
+    public List<DTOPropiedad> getPropiedades(@PathVariable Long id) {
+        return servicioPropiedad.getPropiedades(id);
+    }
+
     @PostMapping("/crearPropiedad")
     public DTOPropiedad crearPropiedad(@RequestBody DTOPropiedad propiedad) {
         return servicioPropiedad.crearPropiedad(propiedad);
