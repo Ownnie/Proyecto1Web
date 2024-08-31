@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.arrienda.proyecto.dtos.DTOSolicitud;
 import com.arrienda.proyecto.modelos.Solicitud;
 
 public interface RepositorioSolicitud extends JpaRepository<Solicitud, Long>{
@@ -13,5 +15,7 @@ public interface RepositorioSolicitud extends JpaRepository<Solicitud, Long>{
     List<Solicitud> findByStatus(int estado);
 
     List<Solicitud> findByArrendatarioId(Long arrendatarioId);
+
+    List<DTOSolicitud> findByPropiedadId(Long propiedadId);
     
 }

@@ -32,6 +32,21 @@ public class ControllerCalificacion {
         return servicioCalificacion.traerCalificacionPorId(id);
     }
 
+    @GetMapping("/arrendador/{tipoId}/{id}/calificaciones")
+    public List<DTOCalificacion> getCalificacionesArrendador(@PathVariable Long id) {
+        return servicioCalificacion.getCalificaciones(id, 0);
+    }
+
+    @GetMapping("/arrendatario/{tipoId}/{id}/calificaciones")
+    public List<DTOCalificacion> getCalificacionesArrendatario(@PathVariable Long id) {
+        return servicioCalificacion.getCalificaciones(id, 1);
+    }
+
+    @GetMapping("/propiedad/{tipoId}/{id}/calificaciones")
+    public List<DTOCalificacion> getCalificacionesPropiedad(@PathVariable Long id) {
+        return servicioCalificacion.getCalificaciones(id, 2);
+    }
+
     @PostMapping("/crearCalificacion")
     public DTOCalificacion crearCalificacion(@RequestBody DTOCalificacion calificacion) {
         return servicioCalificacion.guardarCalificacion(calificacion);

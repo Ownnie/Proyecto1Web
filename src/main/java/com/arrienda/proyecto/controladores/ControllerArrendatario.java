@@ -39,14 +39,4 @@ public class ControllerArrendatario {
 
     }
 
-    @GetMapping("/arrendatario/{id}/calificaciones")
-    public List<DTOCalificacion> getCalificaciones(@PathVariable Long id) {
-        return servicioArrendatario.getCalificaciones(id);
-    }
-
-    @GetMapping("/arrendatario/{id}/solicitudes")
-    public List<DTOSolicitud> getSolicitudes(@PathVariable Long id) {
-        return servicioArrendatario.getSolicitudes(id);
-    }
-
 }
