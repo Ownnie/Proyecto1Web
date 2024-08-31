@@ -2,9 +2,13 @@ package com.arrienda.proyecto.controladores;
 
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.servicios.*;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/arrendatario")
@@ -29,14 +33,20 @@ public class ControllerArrendatario {
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public DTOArrendatario actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendatario arrendatario) {
+    public DTOArrendatario actualizarArrendatario(@PathVariable Long id, @RequestBody DTOArrendatario arrendatario) {
         return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
 
-    @DeleteMapping("/eliminarArrendador/{id}")
-    public void eliminarArrendatario(@PathVariable Long id) {
-        servicioArrendatario.eliminarArrendatario(id);
-
+    @DeleteMapping("/eliminarArrendatario/{id}")
+    public ResponseEntity<String> eliminarArrendatario(@PathVariable Long id) {
+        try {
+            servicioArrendatario.eliminarArrendatario(id);
+            return ResponseEntity.ok("Arrendatario eliminado con éxito.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Arrendatario no encontrado.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el Arrendatario.");
+        }
     }
 
 }
