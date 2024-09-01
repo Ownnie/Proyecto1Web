@@ -23,4 +23,5 @@ public class DTOPropiedad {
     private boolean disponible;
     private float precioXnoche;
     protected int status;
+    private long arrendadorId;
 }

@@ -3,6 +3,8 @@ package com.arrienda.proyecto.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arrienda.proyecto.dtos.DTOPropiedad;
 import com.arrienda.proyecto.servicios.ServicioPropiedad;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
-@RequestMapping("/propiedads")
+@RequestMapping("/propiedad")
 public class ControllerPropiedad {
     @Autowired
     private ServicioPropiedad servicioPropiedad;
@@ -72,8 +76,15 @@ public class ControllerPropiedad {
     }
 
     @DeleteMapping("/eliminarPropiedad/{id}")
-    public void eliminarPropiedad(@PathVariable Long id) {
-        servicioPropiedad.eliminarPropiedad(id);
+    public ResponseEntity<String> eliminarPropiedad(@PathVariable Long id) {
+        try {
+            servicioPropiedad.eliminarPropiedad(id);
+            return ResponseEntity.ok("Propiedad eliminada con éxito.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Propiedad no encontrada.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la propiedad.");
+        }
     }
 
 }
