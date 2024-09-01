@@ -3,6 +3,8 @@ package com.arrienda.proyecto.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arrienda.proyecto.dtos.DTOCalificacion;
 import com.arrienda.proyecto.servicios.ServicioCalificacion;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/calificacion")
@@ -32,17 +36,17 @@ public class ControllerCalificacion {
         return servicioCalificacion.traerCalificacionPorId(id);
     }
 
-    @GetMapping("/arrendador/{tipoId}/{id}/calificaciones")
+    @GetMapping("/arrendador/{id}/calificaciones")
     public List<DTOCalificacion> getCalificacionesArrendador(@PathVariable Long id) {
         return servicioCalificacion.getCalificaciones(id, 0);
     }
 
-    @GetMapping("/arrendatario/{tipoId}/{id}/calificaciones")
+    @GetMapping("/arrendatario/{id}/calificaciones")
     public List<DTOCalificacion> getCalificacionesArrendatario(@PathVariable Long id) {
         return servicioCalificacion.getCalificaciones(id, 1);
     }
 
-    @GetMapping("/propiedad/{tipoId}/{id}/calificaciones")
+    @GetMapping("/propiedad/{id}/calificaciones")
     public List<DTOCalificacion> getCalificacionesPropiedad(@PathVariable Long id) {
         return servicioCalificacion.getCalificaciones(id, 2);
     }
@@ -58,8 +62,15 @@ public class ControllerCalificacion {
     }
 
     @DeleteMapping("/eliminarCalificaciones/{id}")
-    public void eliminarCalificacion(@PathVariable Long id) {
-        servicioCalificacion.eliminarCalificacion(id);
+    public ResponseEntity<String> eliminarCalificacion(@PathVariable Long id) {
+        try {
+            servicioCalificacion.eliminarCalificacion(id);
+            return ResponseEntity.ok("Calificación eliminada con éxito.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Calificación no encontrada.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la calificación.");
+        }
     }
 
 }

@@ -13,7 +13,7 @@ public class DTOCalificacion {
     private long id;
     private float calificacion;
     private String comentario;
-    protected int status;
+    private int status;
     private int idTipo;
     private long idCalificado;
 }
