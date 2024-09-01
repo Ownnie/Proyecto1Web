@@ -77,7 +77,7 @@ public class ServicioPropiedad {
                 .filter(propiedad -> propiedad.getPropietario().getId() == id)
                 .map(propiedad -> modelMapper.map(propiedad, DTOPropiedad.class))
                 .collect(Collectors.toList());
-        }
+    }
 
     // Crear una nueva propiedad
     public DTOPropiedad crearPropiedad(DTOPropiedad dtoPropiedad) {
