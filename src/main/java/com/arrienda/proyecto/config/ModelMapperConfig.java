@@ -29,6 +29,14 @@ public class ModelMapperConfig {
             }
         }, String.class, Date.class);
 
+        modelMapper.addConverter(context -> {
+            Date source = context.getSource();
+            if (source == null) {
+                return null;
+            }
+            return new SimpleDateFormat("yyyy-MM-dd").format(source);
+        }, Date.class, String.class);
+
         return modelMapper;
     }
 }

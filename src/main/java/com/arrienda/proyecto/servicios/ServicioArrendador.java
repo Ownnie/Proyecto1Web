@@ -4,21 +4,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Service
 public class ServicioArrendador {
-
-    private static final Logger logger = LoggerFactory.getLogger(ServicioArrendador.class);
 
     @Autowired
     ModelMapper modelMapper;
@@ -31,6 +27,9 @@ public class ServicioArrendador {
 
     @Autowired
     private RepositorioCalificacion repositorioCalificacion;
+
+    @Autowired
+    private RepositorioSolicitud repositorioSolicitud;
 
     
     public ServicioArrendador(RepositorioArrendador repositorioArrendador) {
@@ -110,33 +109,26 @@ public class ServicioArrendador {
     @Transactional
     public void eliminarArrendador(Long id) {
         try {
-            logger.info("Iniciando eliminación del arrendador con ID: {}", id);
             Arrendador existingArrendador = repositorioArrendador.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Arrendador no encontrado"));
     
             List<Propiedad> propiedades = repositorioPropiedad.findPropiedadesByArrendadorId(existingArrendador.getId());
     
-            // Delete calificaciones associated with each property
             for (Propiedad propiedad : propiedades) {
                 List<Calificacion> calificacionesPropiedad = repositorioCalificacion.findByIdCalificadoAndIdTipo(propiedad.getId(), 2);
                 repositorioCalificacion.deleteAll(calificacionesPropiedad);
-                logger.info("Eliminadas calificaciones de la propiedad con ID: {}", propiedad.getId());
+    
+                List<Solicitud> solicitudesPropiedad = repositorioSolicitud.findByPropiedadId(propiedad.getId());
+                repositorioSolicitud.deleteAll(solicitudesPropiedad);
             }
     
-            // Delete properties
             repositorioPropiedad.deleteAll(propiedades);
-            logger.info("Eliminadas propiedades del arrendador con ID: {}", id);
     
-            // Delete calificaciones associated with the arrendador
             List<Calificacion> calificacionesArrendador = repositorioCalificacion.findByIdCalificadoAndIdTipo(existingArrendador.getId(), 0);
             repositorioCalificacion.deleteAll(calificacionesArrendador);
-            logger.info("Eliminadas calificaciones del arrendador con ID: {}", id);
     
-            // Delete arrendador
             repositorioArrendador.delete(existingArrendador);
-            logger.info("Arrendador con ID: {} eliminado correctamente", id);
         } catch (Exception e) {
-            logger.error("Error al eliminar el arrendador con ID: {}", id, e);
             throw new RuntimeException("Error al eliminar el arrendador", e);
         }
     }

@@ -9,6 +9,7 @@ import com.arrienda.proyecto.repositorios.*;
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ServicioArrendatario {
@@ -102,10 +103,22 @@ public class ServicioArrendatario {
 
     }
 
+    @Transactional
     public void eliminarArrendatario(Long id) {
-        Arrendatario existingArrendatario = repositorioArrendatario.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
-                repositorioArrendatario.delete(existingArrendatario);
+        try {
+            Arrendatario existingArrendatario = repositorioArrendatario.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
+
+            List<Calificacion> calificacionesArrendatario = repositorioCalificacion.findByIdCalificadoAndIdTipo(id, 1);
+            repositorioCalificacion.deleteAll(calificacionesArrendatario);
+
+            List<Solicitud> solicitudesArrendatario = repositorioSolicitud.findByArrendatarioId(id);
+            repositorioSolicitud.deleteAll(solicitudesArrendatario);
+
+            repositorioArrendatario.delete(existingArrendatario);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar el arrendatario", e);
+        }
     }
 
 }

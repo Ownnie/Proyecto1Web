@@ -7,15 +7,23 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arrienda.proyecto.dtos.DTOSolicitud;
-import com.arrienda.proyecto.modelos.Solicitud;
-import com.arrienda.proyecto.repositorios.RepositorioSolicitud;
+import com.arrienda.proyecto.dtos.*;
+import com.arrienda.proyecto.modelos.*;
+import com.arrienda.proyecto.repositorios.*;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ServicioSolicitud {
 
     @Autowired
     private RepositorioSolicitud repositorioSolicitud;
+
+    @Autowired
+    private RepositorioArrendatario repositorioArrendatario;
+
+    @Autowired
+    private RepositorioPropiedad repositorioPropiedad;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -56,6 +64,12 @@ public class ServicioSolicitud {
 
     // Crear una nueva solicitud
     public DTOSolicitud crearSolicitud(DTOSolicitud dtoSolicitud) {
+        Arrendatario arrendatario = repositorioArrendatario.findById(dtoSolicitud.getArrendatarioId())
+                .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
+
+        Propiedad propiedad = repositorioPropiedad.findById(dtoSolicitud.getPropiedadId())
+                .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+
         Solicitud solicitud = modelMapper.map(dtoSolicitud, Solicitud.class);
         Solicitud savedSolicitud = repositorioSolicitud.save(solicitud);
         return modelMapper.map(savedSolicitud, DTOSolicitud.class);
@@ -69,11 +83,14 @@ public class ServicioSolicitud {
                     Solicitud updatedSolicitud = repositorioSolicitud.save(existingSolicitud);
                     return modelMapper.map(updatedSolicitud, DTOSolicitud.class);
                 })
-                .orElseThrow(() -> new RuntimeException("Solicitud not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
     }
 
     // Eliminar una solicitud
     public void eliminarSolicitud(Long id) {
+        Solicitud solicitud = repositorioSolicitud.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitud no encontrada"));
+
         repositorioSolicitud.deleteById(id);
     }
 }

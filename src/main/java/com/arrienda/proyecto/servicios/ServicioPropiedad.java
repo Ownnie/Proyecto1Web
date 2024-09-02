@@ -5,18 +5,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
-import org.slf4j.LoggerFactory;
 
-import com.arrienda.proyecto.dtos.DTOCalificacion;
-import com.arrienda.proyecto.dtos.DTOPropiedad;
-import com.arrienda.proyecto.dtos.DTOSolicitud;
-import com.arrienda.proyecto.modelos.Arrendador;
-import com.arrienda.proyecto.modelos.Calificacion;
-import com.arrienda.proyecto.modelos.Propiedad;
-import com.arrienda.proyecto.modelos.Solicitud;
+import com.arrienda.proyecto.dtos.*;
+import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ServicioPropiedad {
@@ -163,33 +158,40 @@ public class ServicioPropiedad {
 
     // Actualizar una propiedad existente
     public DTOPropiedad actualizarPropiedad(Long id, DTOPropiedad dtoPropiedad) {
-        return repositorioPropiedad.findById(id)
-                .map(existingPropiedad -> {
-                    existingPropiedad.setNombre(dtoPropiedad.getNombre());
-                    existingPropiedad.setUbicacion(dtoPropiedad.getUbicacion());
-                    existingPropiedad.setParqueadero(dtoPropiedad.isParqueadero());
-                    existingPropiedad.setPiscina(dtoPropiedad.isPiscina());
-                    existingPropiedad.setCuartos(dtoPropiedad.getCuartos());
-                    existingPropiedad.setCamas(dtoPropiedad.getCamas());
-                    existingPropiedad.setArea(dtoPropiedad.getArea());
-                    existingPropiedad.setCapacidad(dtoPropiedad.getCapacidad());
-                    existingPropiedad.setDisponible(dtoPropiedad.isDisponible());
-                    existingPropiedad.setPrecioXnoche(dtoPropiedad.getPrecioXnoche());
-                    existingPropiedad.setStatus(dtoPropiedad.getStatus());
-                    Propiedad updatedPropiedad = repositorioPropiedad.save(existingPropiedad);
-                    return modelMapper.map(updatedPropiedad, DTOPropiedad.class);
-                })
-                .orElseGet(() -> {
-                    Propiedad newPropiedad = modelMapper.map(dtoPropiedad, Propiedad.class);
-                    newPropiedad.setId(id);
-                    Propiedad savedPropiedad = repositorioPropiedad.save(newPropiedad);
-                    return modelMapper.map(savedPropiedad, DTOPropiedad.class);
-                });
+        Propiedad existingPropiedad = repositorioPropiedad.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+    
+        existingPropiedad.setNombre(dtoPropiedad.getNombre());
+        existingPropiedad.setUbicacion(dtoPropiedad.getUbicacion());
+        existingPropiedad.setParqueadero(dtoPropiedad.isParqueadero());
+        existingPropiedad.setPiscina(dtoPropiedad.isPiscina());
+        existingPropiedad.setCuartos(dtoPropiedad.getCuartos());
+        existingPropiedad.setCamas(dtoPropiedad.getCamas());
+        existingPropiedad.setArea(dtoPropiedad.getArea());
+        existingPropiedad.setCapacidad(dtoPropiedad.getCapacidad());
+        existingPropiedad.setDisponible(dtoPropiedad.isDisponible());
+        existingPropiedad.setPrecioXnoche(dtoPropiedad.getPrecioXnoche());
+        existingPropiedad.setStatus(dtoPropiedad.getStatus());
+        Propiedad updatedPropiedad = repositorioPropiedad.save(existingPropiedad);
+        return modelMapper.map(updatedPropiedad, DTOPropiedad.class);
     }
 
-    // Eliminar una propiedad
+    @Transactional
     public void eliminarPropiedad(Long id) {
-        repositorioPropiedad.deleteById(id);
+        try {
+            Propiedad propiedad = repositorioPropiedad.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+
+            List<Calificacion> calificacionesPropiedad = repositorioCalificacion.findByIdCalificadoAndIdTipo(id, 2);
+            repositorioCalificacion.deleteAll(calificacionesPropiedad);
+
+            List<Solicitud> solicitudesPropiedad = repositorioSolicitud.findByPropiedadId(id);
+            repositorioSolicitud.deleteAll(solicitudesPropiedad);
+
+            repositorioPropiedad.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar la propiedad", e);
+        }
     }
 
 }
