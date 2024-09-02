@@ -33,11 +33,7 @@ public class Solicitud {
     private boolean aceptacion;
     private int cantidadPersonas;
     protected int status;
-
-    @ManyToOne
-    private Propiedad propiedad;
-
-    @ManyToOne
-    private Arrendatario arrendatario;
+    private long propiedadId;
+    private long arrendatarioId;
 
 }

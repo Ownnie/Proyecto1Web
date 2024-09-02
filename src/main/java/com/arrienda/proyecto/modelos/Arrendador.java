@@ -34,7 +34,7 @@ public class Arrendador {
     private String correo;
     protected int status;
 
-    @OneToMany(mappedBy = "propietario")
+    @OneToMany
     private List<Propiedad> propiedades;
 
     @OneToMany

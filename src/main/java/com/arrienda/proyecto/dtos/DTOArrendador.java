@@ -1,5 +1,7 @@
 package com.arrienda.proyecto.dtos;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,7 @@ public class DTOArrendador {
     private String nombre;
     private String correo;
     protected int status;
+
+    private List<DTOPropiedad> propiedades;
+    private List<DTOCalificacion> calificaciones;
 }

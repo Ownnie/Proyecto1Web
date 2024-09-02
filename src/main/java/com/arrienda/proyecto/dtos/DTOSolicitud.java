@@ -17,6 +17,6 @@ public class DTOSolicitud {
     private boolean aceptacion;
     private int cantidadPersonas;
     private int status;
-    private DTOPropiedad propiedad; 
-    private DTOArrendatario arrendatario; 
+    private long propiedadId;
+    private long arrendatarioId;
 }
