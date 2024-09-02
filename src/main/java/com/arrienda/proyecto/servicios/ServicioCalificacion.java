@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import com.arrienda.proyecto.modelos.Calificacion;
 import com.arrienda.proyecto.repositorios.RepositorioCalificacion;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import com.arrienda.proyecto.dtos.DTOCalificacion;
 
 @Service
@@ -49,25 +52,22 @@ public class ServicioCalificacion {
 
     // Actualizar una calificación existente
     public DTOCalificacion actualizarCalificacion(Long id, DTOCalificacion dtoCalificacion) {
-        return repositorioCalificacion.findById(id)
-                .map(existingCalificacion -> {
-                    existingCalificacion.setCalificacion(dtoCalificacion.getCalificacion());
-                    existingCalificacion.setComentario(dtoCalificacion.getComentario());
-                    existingCalificacion.setIdTipo(dtoCalificacion.getIdTipo());
-                    existingCalificacion.setIdCalificado(dtoCalificacion.getIdCalificado());
-                    Calificacion updatedCalificacion = repositorioCalificacion.save(existingCalificacion);
-                    return modelMapper.map(updatedCalificacion, DTOCalificacion.class);
-                })
-                .orElseGet(() -> {
-                    Calificacion newCalificacion = modelMapper.map(dtoCalificacion, Calificacion.class);
-                    newCalificacion.setId(id);
-                    Calificacion savedCalificacion = repositorioCalificacion.save(newCalificacion);
-                    return modelMapper.map(savedCalificacion, DTOCalificacion.class);
-                });
+        Calificacion existingCalificacion = repositorioCalificacion.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Calificación no encontrada"));
+    
+        existingCalificacion.setCalificacion(dtoCalificacion.getCalificacion());
+        existingCalificacion.setComentario(dtoCalificacion.getComentario());
+        existingCalificacion.setIdTipo(dtoCalificacion.getIdTipo());
+        existingCalificacion.setIdCalificado(dtoCalificacion.getIdCalificado());
+        Calificacion updatedCalificacion = repositorioCalificacion.save(existingCalificacion);
+        return modelMapper.map(updatedCalificacion, DTOCalificacion.class);
     }
 
-    // Eliminar una calificación (eliminación lógica)
+    // Eliminar una calificación
     public void eliminarCalificacion(Long id) {
+        Calificacion calificacion = repositorioCalificacion.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Calificación no encontrada"));
+
         repositorioCalificacion.deleteById(id);
     }
 }
