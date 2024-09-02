@@ -29,247 +29,246 @@ import java.sql.Date;
 @WebMvcTest(ControllerSolicitud.class)
 public class ControllerSolicitudTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private ServicioSolicitud servicioSolicitud;
+        @MockBean
+        private ServicioSolicitud servicioSolicitud;
 
-    @Test
-    public void testGetAllSolicitudes() throws Exception {
-        DTOSolicitud solicitud = new DTOSolicitud();
-        solicitud.setId(1L);
-        solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
-        solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
-        solicitud.setAceptacion(true);
-        solicitud.setCantidadPersonas(4);
-        solicitud.setStatus(1);
-        solicitud.setPropiedad(new DTOPropiedad());
-        solicitud.setArrendatario(new DTOArrendatario());
+        @Test
+        public void testGetAllSolicitudes() throws Exception {
+                DTOSolicitud solicitud = new DTOSolicitud();
+                solicitud.setId(1L);
+                solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
+                solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
+                solicitud.setAceptacion(true);
+                solicitud.setCantidadPersonas(4);
+                solicitud.setStatus(1);
+                solicitud.setPropiedadId(1L);
+                solicitud.setArrendatarioId(1L);
 
-        List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
+                List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
 
-        when(servicioSolicitud.getAllSolicitudes()).thenReturn(solicitudes);
+                when(servicioSolicitud.getAllSolicitudes()).thenReturn(solicitudes);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1}]"));
-    }
+                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}]"));
+        }
 
-    @Test
-    public void testGetSolicitud() throws Exception {
-        DTOSolicitud solicitud = new DTOSolicitud();
-        solicitud.setId(1L);
-        solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
-        solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
-        solicitud.setAceptacion(true);
-        solicitud.setCantidadPersonas(4);
-        solicitud.setStatus(1);
-        solicitud.setPropiedad(new DTOPropiedad());
-        solicitud.setArrendatario(new DTOArrendatario());
+        @Test
+        public void testGetSolicitud() throws Exception {
+                DTOSolicitud solicitud = new DTOSolicitud();
+                solicitud.setId(1L);
+                solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
+                solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
+                solicitud.setAceptacion(true);
+                solicitud.setCantidadPersonas(4);
+                solicitud.setStatus(1);
+                solicitud.setPropiedadId(1L);
+                solicitud.setArrendatarioId(1L);
 
-        when(servicioSolicitud.getSolicitud(1L)).thenReturn(solicitud);
+                when(servicioSolicitud.getSolicitud(1L)).thenReturn(solicitud);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitud/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedad\":{},\"arrendatario\":{}}"));
+                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitud/1")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}"));
 
-        verify(servicioSolicitud, times(1)).getSolicitud(1L);
-    }
+                verify(servicioSolicitud, times(1)).getSolicitud(1L);
+        }
 
-    @Test
-    public void testGetSolicitudesByEstado() throws Exception {
-        DTOSolicitud solicitud = new DTOSolicitud();
-        solicitud.setId(1L);
-        solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
-        solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
-        solicitud.setAceptacion(true);
-        solicitud.setCantidadPersonas(4);
-        solicitud.setStatus(1);
-        solicitud.setPropiedad(new DTOPropiedad());
-        solicitud.setArrendatario(new DTOArrendatario());
+        @Test
+        public void testGetSolicitudesByEstado() throws Exception {
+                DTOSolicitud solicitud = new DTOSolicitud();
+                solicitud.setId(1L);
+                solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
+                solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
+                solicitud.setAceptacion(true);
+                solicitud.setCantidadPersonas(4);
+                solicitud.setStatus(1);
+                solicitud.setPropiedadId(1L);
+                solicitud.setArrendatarioId(1L);
 
-        List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
+                List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
 
-        when(servicioSolicitud.getSolicitudesByEstado(1)).thenReturn(solicitudes);
+                when(servicioSolicitud.getSolicitudesByEstado(1)).thenReturn(solicitudes);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/estado/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedad\":{},\"arrendatario\":{}}]"));
+                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/estado/1")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}]"));
 
-        verify(servicioSolicitud, times(1)).getSolicitudesByEstado(1);
-    }
+                verify(servicioSolicitud, times(1)).getSolicitudesByEstado(1);
+        }
 
-    @Test
-    public void testGetSolicitudesByArrendatarioId() throws Exception {
-        DTOSolicitud solicitud = new DTOSolicitud();
-        solicitud.setId(1L);
-        solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
-        solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
-        solicitud.setAceptacion(true);
-        solicitud.setCantidadPersonas(4);
-        solicitud.setStatus(1);
-        solicitud.setPropiedad(new DTOPropiedad());
-        solicitud.setArrendatario(new DTOArrendatario());
+        @Test
+        public void testGetSolicitudesByArrendatarioId() throws Exception {
+                DTOSolicitud solicitud = new DTOSolicitud();
+                solicitud.setId(1L);
+                solicitud.setFechaLlegada(Date.valueOf("2024-10-12"));
+                solicitud.setFechaPartida(Date.valueOf("2024-10-20"));
+                solicitud.setAceptacion(true);
+                solicitud.setCantidadPersonas(4);
+                solicitud.setStatus(1);
+                solicitud.setPropiedadId(1L);
+                solicitud.setArrendatarioId(1L);
 
-        List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
+                List<DTOSolicitud> solicitudes = Arrays.asList(solicitud);
 
-        when(servicioSolicitud.getSolicitudesByArrendatarioId(1L)).thenReturn(solicitudes);
+                when(servicioSolicitud.getSolicitudesByArrendatarioId(1L)).thenReturn(solicitudes);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/arrendatario/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedad\":{},\"arrendatario\":{}}]"));
+                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/arrendatario/1")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":4,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}]"));
 
-        verify(servicioSolicitud, times(1)).getSolicitudesByArrendatarioId(1L);
-    }
+                verify(servicioSolicitud, times(1)).getSolicitudesByArrendatarioId(1L);
+        }
 
-    @Test
-    public void testGetSolicitudesByPropiedadId() throws Exception {
-        DTOSolicitud solicitud1 = new DTOSolicitud(
-                1L,
-                Date.valueOf("2024-10-12"),
-                Date.valueOf("2024-10-20"),
-                true,
-                3,
-                1,
-                new DTOPropiedad(1L, "Casa de playa", "Ubicación 1", true, true, 3, 5, 200.5f, 10, true, 300.0f, 1, 1L),
-                new DTOArrendatario(1L, "juan123", "password", "Juan", 1, "juan@example.com", new ArrayList<>(),
-                        new ArrayList<>()));
+        @Test
+        public void testGetSolicitudesByPropiedadId() throws Exception {
+                DTOSolicitud solicitud1 = new DTOSolicitud(
+                                1L,
+                                Date.valueOf("2024-10-12"),
+                                Date.valueOf("2024-10-20"),
+                                true,
+                                3,
+                                1,
+                                1L,
+                                1L);
 
-        DTOSolicitud solicitud2 = new DTOSolicitud(
-                2L,
-                Date.valueOf("2024-11-12"),
-                Date.valueOf("2024-11-20"),
-                false,
-                2,
-                2,
-                new DTOPropiedad(2L, "Apartamento en la ciudad", "Ubicación 2", false, false, 2, 3, 80.0f, 5, true,
-                        150.0f, 1, 2L),
-                new DTOArrendatario(2L, "maria123", "password", "Maria", 1, "maria@example.com", new ArrayList<>(),
-                        new ArrayList<>()));
+                DTOSolicitud solicitud2 = new DTOSolicitud(
+                                2L,
+                                Date.valueOf("2024-11-12"),
+                                Date.valueOf("2024-11-20"),
+                                false,
+                                2,
+                                2,
+                                2L,
+                                2L);
 
-        List<DTOSolicitud> solicitudes = Arrays.asList(solicitud1, solicitud2);
+                List<DTOSolicitud> solicitudes = Arrays.asList(solicitud1, solicitud2);
 
-        when(servicioSolicitud.getSolicitudesByPropiedadId(1L)).thenReturn(solicitudes);
+                when(servicioSolicitud.getSolicitudesByPropiedadId(1L)).thenReturn(solicitudes);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/propiedad/1")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedad\":{\"id\":1,\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0,\"status\":1,\"arrendadorId\":1},\"arrendatario\":{\"id\":1,\"usuario\":\"juan123\",\"contrasena\":\"password\",\"nombre\":\"Juan\",\"status\":1,\"correo\":\"juan@example.com\",\"propiedades\":[],\"calificaciones\":[]}},"
-                                +
-                                "{\"id\":2,\"fechaLlegada\":\"2024-11-12\",\"fechaPartida\":\"2024-11-20\",\"aceptacion\":false,\"cantidadPersonas\":2,\"status\":2,\"propiedad\":{\"id\":2,\"nombre\":\"Apartamento en la ciudad\",\"ubicacion\":\"Ubicación 2\",\"parqueadero\":false,\"piscina\":false,\"cuartos\":2,\"camas\":3,\"area\":80.0,\"capacidad\":5,\"disponible\":true,\"precioXnoche\":150.0,\"status\":1,\"arrendadorId\":2},\"arrendatario\":{\"id\":2,\"usuario\":\"maria123\",\"contrasena\":\"password\",\"nombre\":\"Maria\",\"status\":1,\"correo\":\"maria@example.com\",\"propiedades\":[],\"calificaciones\":[]}}]"));
+                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/propiedad/1")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "[{\"id\":1,\"fechaLlegada\":\"2024-10-12\",\"fechaPartida\":\"2024-10-20\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1},"
+                                                                +
+                                                                "{\"id\":2,\"fechaLlegada\":\"2024-11-12\",\"fechaPartida\":\"2024-11-20\",\"aceptacion\":false,\"cantidadPersonas\":2,\"status\":2,\"propiedadId\":2,\"arrendatarioId\":2}]"));
 
-        verify(servicioSolicitud, times(1)).getSolicitudesByPropiedadId(1L);
-    }
+                verify(servicioSolicitud, times(1)).getSolicitudesByPropiedadId(1L);
+        }
 
-    @Test
-    public void testCrearSolicitud() throws Exception {
-        DTOSolicitud solicitud = new DTOSolicitud(
-                1L,
-                Date.valueOf("2024-11-12"),
-                Date.valueOf("2024-11-20"),
-                true,
-                3,
-                1,
-                new DTOPropiedad(1L, "Casa de playa", "Ubicación 1", true, true, 3, 5, 200.5f, 10, true, 300.0f, 1, 1L),
-                new DTOArrendatario(1L, "juan123", "password", "Juan", 1, "juan@example.com", new ArrayList<>(),
-                        new ArrayList<>()));
+        @Test
+        public void testCrearSolicitud() throws Exception {
+                DTOSolicitud solicitud = new DTOSolicitud(
+                                1L,
+                                Date.valueOf("2024-11-12"),
+                                Date.valueOf("2024-11-20"),
+                                true,
+                                3,
+                                1,
+                                1L,
+                                1L);
 
-        when(servicioSolicitud.crearSolicitud(any(DTOSolicitud.class))).thenReturn(solicitud);
+                when(servicioSolicitud.crearSolicitud(any(DTOSolicitud.class))).thenReturn(solicitud);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/solicitud/crearSolicitud")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":1,\"fechaLlegada\":\"" + solicitud.getFechaLlegada() + "\",\"fechaPartida\":\""
-                        + solicitud.getFechaPartida()
-                        + "\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedad\":{\"id\":1,\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0,\"status\":1},\"arrendatario\":{\"id\":1,\"usuario\":\"juan123\",\"contrasena\":\"password\",\"nombre\":\"Juan\",\"status\":1,\"correo\":\"juan@example.com\",\"propiedades\":[],\"calificaciones\":[]}}"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "{\"id\":1,\"fechaLlegada\":\"" + solicitud.getFechaLlegada() + "\",\"fechaPartida\":\""
-                                + solicitud.getFechaPartida()
-                                + "\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedad\":{\"id\":1,\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0,\"status\":1},\"arrendatario\":{\"id\":1,\"usuario\":\"juan123\",\"contrasena\":\"password\",\"nombre\":\"Juan\",\"status\":1,\"correo\":\"juan@example.com\",\"propiedades\":[],\"calificaciones\":[]}}"));
+                mockMvc.perform(MockMvcRequestBuilders.post("/solicitud/crearSolicitud")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":1,\"fechaLlegada\":\"" + solicitud.getFechaLlegada()
+                                                + "\",\"fechaPartida\":\""
+                                                + solicitud.getFechaPartida()
+                                                + "\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}"))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "{\"id\":1,\"fechaLlegada\":\"" + solicitud.getFechaLlegada()
+                                                                + "\",\"fechaPartida\":\""
+                                                                + solicitud.getFechaPartida()
+                                                                + "\",\"aceptacion\":true,\"cantidadPersonas\":3,\"status\":1,\"propiedadId\":1,\"arrendatarioId\":1}"));
 
-        verify(servicioSolicitud, times(1)).crearSolicitud(any(DTOSolicitud.class));
-    }
+                verify(servicioSolicitud, times(1)).crearSolicitud(any(DTOSolicitud.class));
+        }
 
-    @Test
-    public void testActualizarSolicitud() throws Exception {
-        DTOSolicitud solicitudActualizada = new DTOSolicitud(
-                1L,
-                Date.valueOf("2024-11-12"),
-                Date.valueOf("2024-11-20"),
-                false,
-                4,
-                2,
-                new DTOPropiedad(1L, "Casa de playa", "Ubicación 1", true, true, 3, 5, 200.5f, 10, true, 300.0f, 1, 1L),
-                new DTOArrendatario(1L, "juan123", "password", "Juan", 1, "juan@example.com", new ArrayList<>(),
-                        new ArrayList<>()));
+        @Test
+        public void testActualizarSolicitud() throws Exception {
+                DTOSolicitud solicitudActualizada = new DTOSolicitud(
+                                1L,
+                                Date.valueOf("2024-11-12"),
+                                Date.valueOf("2024-11-20"),
+                                false,
+                                4,
+                                2,
+                                1L,
+                                1L);
 
-        when(servicioSolicitud.actualizarSolicitud(eq(1L), any(DTOSolicitud.class))).thenReturn(solicitudActualizada);
+                when(servicioSolicitud.actualizarSolicitud(eq(1L), any(DTOSolicitud.class)))
+                                .thenReturn(solicitudActualizada);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/solicitud/actualizarSolicitud/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":1,\"fechaLlegada\":\"" + solicitudActualizada.getFechaLlegada()
-                        + "\",\"fechaPartida\":\"" + solicitudActualizada.getFechaPartida()
-                        + "\",\"aceptacion\":false,\"cantidadPersonas\":4,\"status\":2,\"propiedad\":{\"id\":1,\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0,\"status\":1},\"arrendatario\":{\"id\":1,\"usuario\":\"juan123\",\"contrasena\":\"password\",\"nombre\":\"Juan\",\"status\":1,\"correo\":\"juan@example.com\",\"propiedades\":[],\"calificaciones\":[]}}"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(
-                        "{\"id\":1,\"fechaLlegada\":\"" + solicitudActualizada.getFechaLlegada()
-                                + "\",\"fechaPartida\":\"" + solicitudActualizada.getFechaPartida()
-                                + "\",\"aceptacion\":false,\"cantidadPersonas\":4,\"status\":2,\"propiedad\":{\"id\":1,\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0,\"status\":1},\"arrendatario\":{\"id\":1,\"usuario\":\"juan123\",\"contrasena\":\"password\",\"nombre\":\"Juan\",\"status\":1,\"correo\":\"juan@example.com\",\"propiedades\":[],\"calificaciones\":[]}}"));
+                mockMvc.perform(MockMvcRequestBuilders.put("/solicitud/actualizarSolicitud/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":1,\"fechaLlegada\":\"" + solicitudActualizada.getFechaLlegada()
+                                                + "\",\"fechaPartida\":\"" + solicitudActualizada.getFechaPartida()
+                                                + "\",\"aceptacion\":false,\"cantidadPersonas\":4,\"status\":2,\"propiedadId\":1,\"arrendatarioId\":1}"))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(content().json(
+                                                "{\"id\":1,\"fechaLlegada\":\"" + solicitudActualizada.getFechaLlegada()
+                                                                + "\",\"fechaPartida\":\""
+                                                                + solicitudActualizada.getFechaPartida()
+                                                                + "\",\"aceptacion\":false,\"cantidadPersonas\":4,\"status\":2,\"propiedadId\":1,\"arrendatarioId\":1}"));
 
-        verify(servicioSolicitud, times(1)).actualizarSolicitud(eq(1L), any(DTOSolicitud.class));
-    }
+                verify(servicioSolicitud, times(1)).actualizarSolicitud(eq(1L), any(DTOSolicitud.class));
+        }
 
-    @Test
-    public void testEliminarSolicitud() throws Exception {
-        Long id = 1L;
-        /*
-         * when(servicioSolicitud.eliminarSolicitud(id))
-         * .thenReturn(ResponseEntity.ok("Solicitud eliminada con éxito."));
-         */
+        @Test
+        public void testEliminarSolicitud() throws Exception {
+                Long id = 1L;
+                /*
+                 * when(servicioSolicitud.eliminarSolicitud(id))
+                 * .thenReturn(ResponseEntity.ok("Solicitud eliminada con éxito."));
+                 */
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Solicitud eliminada con éxito."));
+                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                                .andExpect(status().isOk())
+                                .andExpect(content().string("Solicitud eliminada con éxito."));
 
-        verify(servicioSolicitud, times(1)).eliminarSolicitud(id);
-    }
+                verify(servicioSolicitud, times(1)).eliminarSolicitud(id);
+        }
 
-    @Test
-    public void testEliminarSolicitudNotFound() throws Exception {
-        Long id = 1L;
-        doThrow(new EntityNotFoundException("Solicitud no encontrada")).when(servicioSolicitud)
-                .eliminarSolicitud(id);
+        @Test
+        public void testEliminarSolicitudNotFound() throws Exception {
+                Long id = 1L;
+                doThrow(new EntityNotFoundException("Solicitud no encontrada")).when(servicioSolicitud)
+                                .eliminarSolicitud(id);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Solicitud no encontrada."));
-    }
+                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                                .andExpect(status().isNotFound())
+                                .andExpect(content().string("Solicitud no encontrada."));
+        }
 
-    @Test
-    public void testEliminarSolicitudError() throws Exception {
-        Long id = 1L;
-        doThrow(new RuntimeException("Error interno del servidor")).when(servicioSolicitud)
-                .eliminarSolicitud(id);
+        @Test
+        public void testEliminarSolicitudError() throws Exception {
+                Long id = 1L;
+                doThrow(new RuntimeException("Error interno del servidor")).when(servicioSolicitud)
+                                .eliminarSolicitud(id);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string("Error al eliminar la solicitud."));
-    }
+                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                                .andExpect(status().isInternalServerError())
+                                .andExpect(content().string("Error al eliminar la solicitud."));
+        }
 }
