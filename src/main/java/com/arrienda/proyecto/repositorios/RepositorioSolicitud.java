@@ -16,6 +16,8 @@ public interface RepositorioSolicitud extends JpaRepository<Solicitud, Long>{
 
     List<Solicitud> findByArrendatarioId(Long arrendatarioId);
 
-    List<DTOSolicitud> findByPropiedadId(Long propiedadId);
+    List<Solicitud> findByPropiedadId(Long propiedadId);
+
+    List<Solicitud> findSolicitudesByArrendatarioId(long id);
     
 }

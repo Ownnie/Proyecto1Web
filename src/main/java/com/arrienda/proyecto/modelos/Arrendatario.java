@@ -32,7 +32,7 @@ public class Arrendatario {
     private String correo;
     protected int status;
 
-    @OneToMany(mappedBy = "arrendatario")
+    @OneToMany
     private List<Solicitud> solicitudes;
 
     @OneToMany

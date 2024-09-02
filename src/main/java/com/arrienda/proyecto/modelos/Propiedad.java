@@ -28,14 +28,12 @@ public class Propiedad {
     private float area;
     private int capacidad;
     private boolean disponible;
-    private float precioXnoche;
+    private long precioXnoche;
     protected int status;
+    private long arrendadorId;
 
     @OneToMany
     private List<Calificacion> calificaciones;
-
-    @ManyToOne
-    private Arrendador propietario;
 
     @OneToMany
     private List<Solicitud> solicitudes;

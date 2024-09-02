@@ -17,6 +17,6 @@ public class DTOArrendatario {
     private String nombre;
     protected int status;
     private String correo;
-    private List<DTOPropiedad> propiedades;
+    private List<DTOSolicitud> solicitudes;
     protected List<DTOCalificacion> calificaciones;
 }
