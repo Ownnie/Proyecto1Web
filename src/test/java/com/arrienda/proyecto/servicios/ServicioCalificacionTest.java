@@ -120,7 +120,12 @@ public class ServicioCalificacionTest {
 
     @Test
     void testEliminarCalificacion() {
-        doNothing().when(repositorioCalificacion).deleteById(anyLong());
+        Long calificacionId = 1L;
+
+        Calificacion calificacion = new Calificacion();
+        calificacion.setId(calificacionId);
+
+        when(repositorioCalificacion.findById(calificacionId)).thenReturn(Optional.of(calificacion));
 
         servicioCalificacion.eliminarCalificacion(1L);
 

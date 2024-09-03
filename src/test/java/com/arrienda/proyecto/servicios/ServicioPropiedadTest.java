@@ -309,7 +309,10 @@ public class ServicioPropiedadTest {
 
     @Test
     public void testEliminarPropiedad() {
-        doNothing().when(repositorioPropiedad).deleteById(1L);
+        Long propiedadId = 1L;
+        Propiedad propiedad = new Propiedad();
+        propiedad.setId(propiedadId);
+        when(repositorioPropiedad.findById(propiedadId)).thenReturn(Optional.of(propiedad));
 
         servicioPropiedad.eliminarPropiedad(1L);
 
