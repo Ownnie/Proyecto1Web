@@ -13,9 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.arrienda.proyecto.dtos.DTOArrendatario;
+import com.arrienda.proyecto.dtos.DTOPropiedad;
 import com.arrienda.proyecto.dtos.DTOSolicitud;
+import com.arrienda.proyecto.modelos.Arrendatario;
+import com.arrienda.proyecto.modelos.Propiedad;
 import com.arrienda.proyecto.modelos.Solicitud;
+import com.arrienda.proyecto.repositorios.RepositorioArrendatario;
+import com.arrienda.proyecto.repositorios.RepositorioPropiedad;
 import com.arrienda.proyecto.repositorios.RepositorioSolicitud;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -26,6 +34,12 @@ public class ServicioSolicitudTest {
 
     @MockBean
     private RepositorioSolicitud repositorioSolicitud;
+
+    @MockBean
+    private RepositorioPropiedad repositorioPropiedad;
+
+    @MockBean
+    private RepositorioArrendatario repositorioArrendatario;
 
     @MockBean
     private ModelMapper modelMapper;
@@ -134,27 +148,52 @@ public class ServicioSolicitudTest {
 
     @Test
     public void testCrearSolicitud() {
+
         DTOSolicitud dtoSolicitud = new DTOSolicitud();
         dtoSolicitud.setId(1L);
         dtoSolicitud.setPropiedadId(100L);
+        dtoSolicitud.setArrendatarioId(1L);
+
+        // Configurar entidades simuladas
+        Arrendatario arrendatario = new Arrendatario();
+        arrendatario.setId(1L);
+        arrendatario.setNombre("Juan Pérez");
+
+        Propiedad propiedad = new Propiedad();
+        propiedad.setId(100L);
+        propiedad.setNombre("Santiago Bernabeu");
 
         Solicitud solicitud = new Solicitud();
         solicitud.setId(1L);
         solicitud.setPropiedadId(100L);
+        solicitud.setArrendatarioId(1L);
 
+        Solicitud savedSolicitud = new Solicitud();
+        savedSolicitud.setId(1L);
+        savedSolicitud.setPropiedadId(100L);
+        savedSolicitud.setArrendatarioId(1L);
+
+        // Configurar los mocks
+        when(repositorioArrendatario.findById(1L)).thenReturn(Optional.of(arrendatario));
+        when(repositorioPropiedad.findById(100L)).thenReturn(Optional.of(propiedad));
         when(modelMapper.map(dtoSolicitud, Solicitud.class)).thenReturn(solicitud);
-        when(repositorioSolicitud.save(solicitud)).thenReturn(solicitud);
-        when(modelMapper.map(solicitud, DTOSolicitud.class)).thenReturn(dtoSolicitud);
+        when(repositorioSolicitud.save(solicitud)).thenReturn(savedSolicitud);
+        when(modelMapper.map(savedSolicitud, DTOSolicitud.class)).thenReturn(dtoSolicitud);
 
+        // Ejecutar el método de prueba
         DTOSolicitud result = servicioSolicitud.crearSolicitud(dtoSolicitud);
 
+        // Verificaciones
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals(100L, result.getPropiedadId());
+        assertEquals(1L, result.getArrendatarioId());
 
+        verify(repositorioArrendatario, times(1)).findById(1L);
+        verify(repositorioPropiedad, times(1)).findById(100L);
         verify(modelMapper, times(1)).map(dtoSolicitud, Solicitud.class);
         verify(repositorioSolicitud, times(1)).save(solicitud);
-        verify(modelMapper, times(1)).map(solicitud, DTOSolicitud.class);
+        verify(modelMapper, times(1)).map(savedSolicitud, DTOSolicitud.class);
     }
 
     @Test
@@ -182,11 +221,36 @@ public class ServicioSolicitudTest {
     }
 
     @Test
-    public void testEliminarSolicitud() {
-        doNothing().when(repositorioSolicitud).deleteById(1L);
+    public void testEliminarSolicitud_Existente() {
+        // Configurar ID de la solicitud a eliminar
+        Long solicitudId = 1L;
 
-        servicioSolicitud.eliminarSolicitud(1L);
+        // Configurar entidad simulada
+        Solicitud solicitud = new Solicitud();
+        solicitud.setId(solicitudId);
 
-        verify(repositorioSolicitud, times(1)).deleteById(1L);
+        // Configurar el mock para que encuentre la solicitud
+        when(repositorioSolicitud.findById(solicitudId)).thenReturn(Optional.of(solicitud));
+
+        // Ejecutar el método de prueba
+        servicioSolicitud.eliminarSolicitud(solicitudId);
+
+        // Verificar que el método deleteById se llame una vez con el ID correcto
+        verify(repositorioSolicitud, times(1)).deleteById(solicitudId);
     }
+
+    /*
+     * @Test
+     * public void testEliminarSolicitud_NoExistente() {
+     * // Configurar ID de la solicitud a eliminar
+     * Long solicitudId = 1L;
+     * 
+     * // Configurar el mock para que no encuentre la solicitud
+     * when(repositorioSolicitud.findById(solicitudId)).thenReturn(Optional.empty())
+     * ;
+     * 
+     * // Ejecutar el método de prueba y esperar que se lance una excepción
+     * servicioSolicitud.eliminarSolicitud(solicitudId);
+     * }
+     */
 }
