@@ -20,16 +20,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Where(clause = "status = 0")
 @SQLDelete(sql = "UPDATE arrendatario SET status = 1 WHERE id=?")
-public class Arrendatario {
+public class Arrendatario extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String nombre;
-    private String usuario;
-    private String contrasena;
-    private String correo;
     protected int status;
 
     @OneToMany
