@@ -2,6 +2,7 @@ package com.arrienda.proyecto.servicios;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.sql.Date;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,22 @@ public class ServicioSolicitud {
 
         Propiedad propiedad = repositorioPropiedad.findById(dtoSolicitud.getPropiedadId())
                 .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+
+        if (propiedad.getArrendadorId() == arrendatario.getId()) {
+            throw new RuntimeException("No puedes solicitar una propiedad que tú mismo arriendas");
+        }
+        if (dtoSolicitud.getFechaLlegada().after(dtoSolicitud.getFechaPartida())) {
+            throw new RuntimeException("La fecha de inicio debe ser anterior a la fecha de fin");
+        }
+
+        boolean existeSolicitudAprobada = repositorioSolicitud
+                .existsByPropiedadIdAndAceptacionAndFechaLlegadaLessThanEqualAndFechaPartidaGreaterThanEqual(
+                        dtoSolicitud.getPropiedadId(), true, dtoSolicitud.getFechaPartida(),
+                        dtoSolicitud.getFechaLlegada());
+
+        if (existeSolicitudAprobada) {
+            throw new RuntimeException("Ya existe una solicitud aprobada que se cruza con las fechas proporcionadas");
+        }
 
         Solicitud solicitud = modelMapper.map(dtoSolicitud, Solicitud.class);
         Solicitud savedSolicitud = repositorioSolicitud.save(solicitud);
