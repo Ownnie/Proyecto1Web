@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -28,6 +28,15 @@ public class ServicioCalificacionTest {
 
     @MockBean
     private RepositorioCalificacion repositorioCalificacion;
+
+    @MockBean
+    private ServicioArrendador servicioArrendador;
+
+    @MockBean
+    private ServicioArrendatario servicioArrendatario;
+
+    @MockBean
+    private ServicioPropiedad servicioPropiedad;
 
     @MockBean
     private ModelMapper modelMapper;
@@ -119,16 +128,126 @@ public class ServicioCalificacionTest {
     }
 
     @Test
-    void testEliminarCalificacion() {
+    public void testEliminarCalificacionYActualizarPromedio() {
         Long calificacionId = 1L;
 
         Calificacion calificacion = new Calificacion();
         calificacion.setId(calificacionId);
+        calificacion.setIdTipo(0);
+        calificacion.setIdCalificado(1L);
+        calificacion.setCalificacion(4);
 
         when(repositorioCalificacion.findById(calificacionId)).thenReturn(Optional.of(calificacion));
+        doNothing().when(repositorioCalificacion).deleteById(calificacionId);
 
-        servicioCalificacion.eliminarCalificacion(1L);
+        servicioCalificacion.eliminarCalificacion(calificacionId);
 
-        verify(repositorioCalificacion, times(1)).deleteById(1L);
+        verify(repositorioCalificacion, times(1)).deleteById(calificacionId);
+        verify(servicioArrendador).actualizarPromedioCalificacion(1L, 0.0f); 
     }
+
+    @Test
+    public void testActualizarPromedioTipoArrendador() {
+        Calificacion calificacion = new Calificacion();
+        calificacion.setIdTipo(0);
+        calificacion.setIdCalificado(1L);
+
+        Calificacion calificacion1 = new Calificacion();
+        calificacion1.setCalificacion(4);
+
+        Calificacion calificacion2 = new Calificacion();
+        calificacion2.setCalificacion(5);
+
+        List<Calificacion> calificaciones = Arrays.asList(calificacion1, calificacion2);
+
+        when(repositorioCalificacion.findByIdCalificadoAndIdTipo(1L, 0)).thenReturn(calificaciones);
+
+        servicioCalificacion.actualizarPromedio(calificacion);
+
+        verify(servicioArrendador).actualizarPromedioCalificacion(1L, 4.5f);
+    }
+
+    @Test
+    public void testActualizarPromedioTipoArrendatario() {
+        Calificacion calificacion = new Calificacion();
+        calificacion.setIdTipo(1);
+        calificacion.setIdCalificado(2L);
+
+        Calificacion calificacion1 = new Calificacion();
+        calificacion1.setCalificacion(3);
+
+        Calificacion calificacion2 = new Calificacion();
+        calificacion2.setCalificacion(3);
+
+        List<Calificacion> calificaciones = Arrays.asList(calificacion1, calificacion2);
+
+        when(repositorioCalificacion.findByIdCalificadoAndIdTipo(2L, 1)).thenReturn(calificaciones);
+
+        servicioCalificacion.actualizarPromedio(calificacion);
+
+        verify(servicioArrendatario).actualizarPromedioCalificacion(2L, 3.0f);
+    }
+    
+    @Test
+    public void testActualizarPromedioTipoPropiedad() {
+        Calificacion calificacion = new Calificacion();
+        calificacion.setIdTipo(2);
+        calificacion.setIdCalificado(3L);
+
+        Calificacion calificacion1 = new Calificacion();
+        calificacion1.setCalificacion(2);
+
+        Calificacion calificacion2 = new Calificacion();
+        calificacion2.setCalificacion(4);
+
+        List<Calificacion> calificaciones = Arrays.asList(calificacion1, calificacion2);
+
+        when(repositorioCalificacion.findByIdCalificadoAndIdTipo(3L, 2)).thenReturn(calificaciones);
+
+        servicioCalificacion.actualizarPromedio(calificacion);
+
+        verify(servicioPropiedad).actualizarPromedioCalificacion(3L, 3.0f);
+    }
+
+    @Test
+    public void testActualizarPromedioEmptyList() {
+        Calificacion calificacion = new Calificacion();
+        calificacion.setIdTipo(0);
+        calificacion.setIdCalificado(1L);
+
+        when(repositorioCalificacion.findByIdCalificadoAndIdTipo(1L, 0)).thenReturn(Collections.emptyList());
+
+        servicioCalificacion.actualizarPromedio(calificacion);
+
+        verify(servicioArrendador).actualizarPromedioCalificacion(1L, 0.0f);
+    }
+
+    @Test
+    public void testActualizarPromedioNullList() {
+        Calificacion calificacion = new Calificacion();
+        calificacion.setIdTipo(0);
+        calificacion.setIdCalificado(1L);
+
+        when(repositorioCalificacion.findByIdCalificadoAndIdTipo(1L, 0)).thenReturn(null);
+
+        servicioCalificacion.actualizarPromedio(calificacion);
+
+        verify(servicioArrendador).actualizarPromedioCalificacion(1L, 0.0f);
+    }
+
+    @Test
+    public void testCalcularPromedioConCalificaciones() {
+        Calificacion calificacion1 = new Calificacion();
+        calificacion1.setCalificacion(4);
+
+        Calificacion calificacion2 = new Calificacion();
+        calificacion2.setCalificacion(5);
+
+        List<Calificacion> calificaciones = Arrays.asList(calificacion1, calificacion2);
+
+        float promedio = servicioCalificacion.calcularPromedio(calificaciones);
+
+        assertEquals(4.5f, promedio);
+    }
+
 }

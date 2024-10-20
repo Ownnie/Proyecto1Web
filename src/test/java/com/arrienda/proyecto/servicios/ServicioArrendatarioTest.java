@@ -2,7 +2,6 @@ package com.arrienda.proyecto.servicios;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
-import com.arrienda.proyecto.servicios.ServicioArrendatario;
 
 import jakarta.persistence.EntityNotFoundException;
 

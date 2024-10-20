@@ -12,11 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DTOArrendatario {
     private long id;
-    protected String usuario;
-    protected String contrasena;
+    private String usuario;
     private String nombre;
-    protected int status;
     private String correo;
+    private String rol; 
+    private float calificionPromedio;
+    private int status;
     private List<DTOSolicitud> solicitudes;
     protected List<DTOCalificacion> calificaciones;
 }

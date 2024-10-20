@@ -13,12 +13,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DTOArrendador {
     private long id;
-
-    protected String usuario;
+    private String usuario;
     private String nombre;
     private String correo;
-    protected int status;
-
+    private String rol; 
+    private float calificionPromedio;
+    private int status;
     private List<DTOPropiedad> propiedades;
     private List<DTOCalificacion> calificaciones;
 }

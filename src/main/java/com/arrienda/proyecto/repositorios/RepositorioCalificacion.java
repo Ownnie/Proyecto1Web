@@ -2,8 +2,6 @@ package com.arrienda.proyecto.repositorios;
 
 import java.util.*;
 import org.springframework.data.jpa.repository.*;
-
-import com.arrienda.proyecto.dtos.DTOArrendador;
 import com.arrienda.proyecto.modelos.Calificacion;
 
 

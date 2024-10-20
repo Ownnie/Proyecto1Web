@@ -92,6 +92,8 @@ public class ServicioArrendador {
             throw new IllegalArgumentException("El arrendador con este usuario ya existe.");
         }
     
+        dtoArrendador.setCalificionPromedio(0.0f);
+
         Arrendador arrendador = modelMapper.map(dtoArrendador, Arrendador.class);
         Arrendador savedArrendador = repositorioArrendador.save(arrendador);
         return modelMapper.map(savedArrendador, DTOArrendador.class);
@@ -132,4 +134,12 @@ public class ServicioArrendador {
             throw new RuntimeException("Error al eliminar el arrendador", e);
         }
     }
+
+    void actualizarPromedioCalificacion(Long id, float calificacionPromedio) {
+        Arrendador arrendador = repositorioArrendador.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Arrendador no encontrado"));
+        arrendador.setCalificionPromedio(calificacionPromedio);
+        repositorioArrendador.save(arrendador);
+    }
+
 } 

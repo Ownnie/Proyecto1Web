@@ -5,11 +5,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
-
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -179,9 +177,9 @@ public class ServicioPropiedad {
     @Transactional
     public void eliminarPropiedad(Long id) {
         try {
-            Propiedad propiedad = repositorioPropiedad.findById(id)
+            repositorioPropiedad.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
-
+            
             List<Calificacion> calificacionesPropiedad = repositorioCalificacion.findByIdCalificadoAndIdTipo(id, 2);
             repositorioCalificacion.deleteAll(calificacionesPropiedad);
 
@@ -192,6 +190,13 @@ public class ServicioPropiedad {
         } catch (Exception e) {
             throw new RuntimeException("Error al eliminar la propiedad", e);
         }
+    }
+
+    void actualizarPromedioCalificacion(Long id, float calificacionPromedio) {
+        Propiedad propiedad = repositorioPropiedad.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+                propiedad.setCalificionPromedio(calificacionPromedio);
+        repositorioPropiedad.save(propiedad);
     }
 
 }

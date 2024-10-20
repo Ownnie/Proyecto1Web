@@ -10,8 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DTOUsuario {
+    private long id;
     private String usuario;
     private String nombre;
     private String correo;
-    private String rol; // Puede ser "ARRENDADOR" o "ARRENDATARIO"
+    private String rol; 
+    private float calificionPromedio;
+    private int status;
 }
