@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.*;
+import java.sql.Date;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -148,11 +149,12 @@ public class ServicioSolicitudTest {
 
     @Test
     public void testCrearSolicitud() {
-
         DTOSolicitud dtoSolicitud = new DTOSolicitud();
         dtoSolicitud.setId(1L);
         dtoSolicitud.setPropiedadId(100L);
         dtoSolicitud.setArrendatarioId(1L);
+        dtoSolicitud.setFechaLlegada(Date.valueOf("2025-06-16"));
+        dtoSolicitud.setFechaPartida(Date.valueOf("2025-06-23"));
 
         // Configurar entidades simuladas
         Arrendatario arrendatario = new Arrendatario();
@@ -162,20 +164,30 @@ public class ServicioSolicitudTest {
         Propiedad propiedad = new Propiedad();
         propiedad.setId(100L);
         propiedad.setNombre("Santiago Bernabeu");
+        propiedad.setArrendadorId(2L); // Asegurarse de que el arrendador no sea el mismo que el arrendatario
+        propiedad.setDisponible(true);
 
         Solicitud solicitud = new Solicitud();
         solicitud.setId(1L);
         solicitud.setPropiedadId(100L);
         solicitud.setArrendatarioId(1L);
+        solicitud.setFechaLlegada(Date.valueOf("2025-06-16"));
+        solicitud.setFechaPartida(Date.valueOf("2025-06-23"));
 
         Solicitud savedSolicitud = new Solicitud();
         savedSolicitud.setId(1L);
         savedSolicitud.setPropiedadId(100L);
         savedSolicitud.setArrendatarioId(1L);
+        savedSolicitud.setFechaLlegada(Date.valueOf("2025-06-16"));
+        savedSolicitud.setFechaPartida(Date.valueOf("2025-06-23"));
 
-        // Configurar los mocks
+        // Configurar los mock
         when(repositorioArrendatario.findById(1L)).thenReturn(Optional.of(arrendatario));
         when(repositorioPropiedad.findById(100L)).thenReturn(Optional.of(propiedad));
+        when(repositorioSolicitud
+                .existsByPropiedadIdAndAceptacionAndFechaLlegadaLessThanEqualAndFechaPartidaGreaterThanEqual(
+                        100L, true, dtoSolicitud.getFechaPartida(), dtoSolicitud.getFechaLlegada()))
+                .thenReturn(false);
         when(modelMapper.map(dtoSolicitud, Solicitud.class)).thenReturn(solicitud);
         when(repositorioSolicitud.save(solicitud)).thenReturn(savedSolicitud);
         when(modelMapper.map(savedSolicitud, DTOSolicitud.class)).thenReturn(dtoSolicitud);
@@ -191,6 +203,9 @@ public class ServicioSolicitudTest {
 
         verify(repositorioArrendatario, times(1)).findById(1L);
         verify(repositorioPropiedad, times(1)).findById(100L);
+        verify(repositorioSolicitud, times(1))
+                .existsByPropiedadIdAndAceptacionAndFechaLlegadaLessThanEqualAndFechaPartidaGreaterThanEqual(
+                        100L, true, dtoSolicitud.getFechaPartida(), dtoSolicitud.getFechaLlegada());
         verify(modelMapper, times(1)).map(dtoSolicitud, Solicitud.class);
         verify(repositorioSolicitud, times(1)).save(solicitud);
         verify(modelMapper, times(1)).map(savedSolicitud, DTOSolicitud.class);
