@@ -2,10 +2,6 @@ package com.arrienda.proyecto.dtos;
 
 import java.util.List;
 
-import com.arrienda.proyecto.modelos.Calificacion;
-import com.arrienda.proyecto.modelos.Solicitud;
-
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +26,7 @@ public class DTOPropiedad {
     private long precioXnoche;
     protected int status;
     private long arrendadorId;
+    private float calificionPromedio;
 
     private List<DTOCalificacion> calificaciones;
     private List<DTOSolicitud> solicitudes;

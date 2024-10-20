@@ -1,12 +1,7 @@
 package com.arrienda.proyecto.modelos;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,21 +26,12 @@ public class Usuario {
     private String contrasena;
     private String nombre;
     private String correo;
-
-    public Usuario(String usuario, String contrasena, String nombre, String correo, Rol rol, int status) {
-        this.usuario = usuario;
-        this.contrasena = contrasena;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.rol = rol;
-        this.status = status;
-    }
+    private float calificionPromedio;
+    protected int status;
 
     @Enumerated(EnumType.STRING)
     private Rol rol;
-
-    protected int status;
-
+    
     public enum Rol {
         ARRENDADOR, ARRENDATARIO
     }

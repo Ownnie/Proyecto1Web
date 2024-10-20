@@ -2,10 +2,7 @@ package com.arrienda.proyecto.repositorios;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.arrienda.proyecto.dtos.DTOSolicitud;
 import com.arrienda.proyecto.modelos.Solicitud;
 
 public interface RepositorioSolicitud extends JpaRepository<Solicitud, Long>{
