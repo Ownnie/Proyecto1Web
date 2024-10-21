@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-         app: cheeserun_backend
+         app: cheeserun-backend
     spec:
       imagePullSecrets:
          - name: github-secret
