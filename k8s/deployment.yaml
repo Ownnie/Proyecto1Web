@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cheeserun_backend
+  name: cheeserun-backend
   namespace: back-cheeserun
 spec:
   selector:
     matchLabels:
-      app: cheeserun_backend
+      app: cheeserun-backend
   replicas: 1
   template:
     metadata:
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cheeserun_backend_service
+  name: cheeserun-backend-service
   namespace: back-cheeserun
 spec:
   selector:
