@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cheeserun_backend
+  namespace: back-cheeserun
+spec:
+  selector:
+    matchLabels:
+      app: cheeserun_backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+         app: cheeserun_backend
+    spec:
+      imagePullSecrets:
+         - name: github-secret
+      containers:
+         - name: estudiante
+           image: localhost/cheeserun-back
+           ports:
+              - containerPort: 8080
+           
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cheeserun_backend_service
+  namespace: back-cheeserun
+spec:
+  selector:
+    app: estudiante
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
