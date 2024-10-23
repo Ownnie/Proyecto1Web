@@ -17,7 +17,7 @@ spec:
          - name: github-secret
       containers:
          - name: estudiante
-           image: localhost/cheeserun-back
+           image: localhost/cheeserun-back:latest
            ports:
               - containerPort: 8080
            
