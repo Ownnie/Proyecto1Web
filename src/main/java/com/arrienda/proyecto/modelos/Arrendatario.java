@@ -1,6 +1,9 @@
 package com.arrienda.proyecto.modelos;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +21,18 @@ import java.util.List;
 @AllArgsConstructor
 @Where(clause = "status = 0")
 @SQLDelete(sql = "UPDATE arrendatario SET status = 1 WHERE id=?")
-public class Arrendatario extends Usuario {
+public class Arrendatario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String usuario;
+    private String contrasena;
+    private String nombre;
+    private String correo;
+    private float calificionPromedio;
+    protected int status;
 
     @OneToMany
     private List<Solicitud> solicitudes;
