@@ -9,7 +9,7 @@ spec:
    - host: localhost
      http:
        paths:
-       - path: /api/javeriana/estudiante
+       - path: /api
          pathType: Prefix
          backend:
            service:
