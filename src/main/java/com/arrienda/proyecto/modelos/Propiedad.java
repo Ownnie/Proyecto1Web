@@ -39,4 +39,13 @@ public class Propiedad {
     @OneToMany
     private List<Solicitud> solicitudes;
 
+    private Boolean lavanderia;
+    private Boolean wifi;
+    private Boolean mascotas;
+    private Boolean gimnasios;
+    private Boolean zonaJuegos;
+    private Boolean alimentacion;
+    private String propiedad;
+    private List<String> imagenes;
+
 }

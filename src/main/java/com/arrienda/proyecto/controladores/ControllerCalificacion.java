@@ -20,7 +20,7 @@ import com.arrienda.proyecto.servicios.ServicioCalificacion;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/calificacion")
+@RequestMapping("/api/calificacion")
 public class ControllerCalificacion {
 
     @Autowired

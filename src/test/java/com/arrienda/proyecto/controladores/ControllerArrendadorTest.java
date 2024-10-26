@@ -44,7 +44,7 @@ public class ControllerArrendadorTest {
 
                 when(servicioArrendador.traerArrendadores()).thenReturn(arrendadores);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/arrendador/arrendadores")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/arrendador/arrendadores")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -59,7 +59,7 @@ public class ControllerArrendadorTest {
                 arrendador.setId(id);
                 when(servicioArrendador.traerArrendador(id)).thenReturn(arrendador);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/arrendador/arrendador/{id}", id)
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/arrendador/arrendador/{id}", id)
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -75,7 +75,7 @@ public class ControllerArrendadorTest {
 
                 when(servicioArrendador.crearArrendador(any(DTOArrendador.class))).thenReturn(arrendador);
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/arrendador/crearArrendador")
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/arrendador/crearArrendador")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(arrendadorJson))
                                 .andExpect(status().isOk())
@@ -96,7 +96,7 @@ public class ControllerArrendadorTest {
 
                 when(servicioArrendador.actualizarArrendador(eq(id), any(DTOArrendador.class))).thenReturn(arrendador);
 
-                mockMvc.perform(MockMvcRequestBuilders.put("/arrendador/actualizarArrendador/{id}", id)
+                mockMvc.perform(MockMvcRequestBuilders.put("/api/arrendador/actualizarArrendador/{id}", id)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(arrendadorJson))
                                 .andExpect(status().isOk())
@@ -114,7 +114,7 @@ public class ControllerArrendadorTest {
                  * .thenReturn(ResponseEntity.ok("Arrendador eliminado con éxito."));
                  */
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/arrendador/eliminarArrendador/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/arrendador/eliminarArrendador/{id}", id))
                                 .andExpect(status().isOk())
                                 .andExpect(content().string("Arrendador eliminado con éxito."));
 
@@ -127,7 +127,7 @@ public class ControllerArrendadorTest {
                 doThrow(new EntityNotFoundException("Entidad no encontrada")).when(servicioArrendador)
                                 .eliminarArrendador(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/arrendador/eliminarArrendador/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/arrendador/eliminarArrendador/{id}", id))
                                 .andExpect(status().isNotFound())
                                 .andExpect(content().string("Arrendador no encontrado."));
         }
@@ -138,7 +138,7 @@ public class ControllerArrendadorTest {
                 doThrow(new RuntimeException("Error interno del servidor")).when(servicioArrendador)
                                 .eliminarArrendador(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/arrendador/eliminarArrendador/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/arrendador/eliminarArrendador/{id}", id))
                                 .andExpect(status().isInternalServerError())
                                 .andExpect(content().string("Error al eliminar el arrendador."));
         }

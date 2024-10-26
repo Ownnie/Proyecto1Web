@@ -11,7 +11,7 @@ import com.arrienda.proyecto.servicios.*;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/arrendatario")
+@RequestMapping("/api/arrendatario")
 public class ControllerArrendatario {
 
     @Autowired

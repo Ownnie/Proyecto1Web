@@ -13,18 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.arrienda.proyecto.dtos.DTOArrendatario;
-import com.arrienda.proyecto.dtos.DTOPropiedad;
-import com.arrienda.proyecto.dtos.DTOSolicitud;
+import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.Arrendatario;
 import com.arrienda.proyecto.modelos.Propiedad;
 import com.arrienda.proyecto.modelos.Solicitud;
 import com.arrienda.proyecto.repositorios.RepositorioArrendatario;
 import com.arrienda.proyecto.repositorios.RepositorioPropiedad;
 import com.arrienda.proyecto.repositorios.RepositorioSolicitud;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

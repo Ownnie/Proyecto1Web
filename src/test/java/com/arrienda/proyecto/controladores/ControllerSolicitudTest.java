@@ -2,8 +2,6 @@ package com.arrienda.proyecto.controladores;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import com.arrienda.proyecto.dtos.DTOArrendatario;
-import com.arrienda.proyecto.dtos.DTOPropiedad;
 import com.arrienda.proyecto.dtos.DTOSolicitud;
 import com.arrienda.proyecto.servicios.ServicioSolicitud;
 
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -51,7 +48,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.getAllSolicitudes()).thenReturn(solicitudes);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/solicitud/solicitudes")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -73,7 +70,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.getSolicitud(1L)).thenReturn(solicitud);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitud/1")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/solicitud/solicitud/1")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +96,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.getSolicitudesByEstado(1)).thenReturn(solicitudes);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/estado/1")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/solicitud/solicitudes/estado/1")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +122,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.getSolicitudesByArrendatarioId(1L)).thenReturn(solicitudes);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/arrendatario/1")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/solicitud/solicitudes/arrendatario/1")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -161,7 +158,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.getSolicitudesByPropiedadId(1L)).thenReturn(solicitudes);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/solicitud/solicitudes/propiedad/1")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/solicitud/solicitudes/propiedad/1")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -187,7 +184,7 @@ public class ControllerSolicitudTest {
 
                 when(servicioSolicitud.crearSolicitud(any(DTOSolicitud.class))).thenReturn(solicitud);
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/solicitud/crearSolicitud")
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/solicitud/crearSolicitud")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"id\":1,\"fechaLlegada\":\"" + solicitud.getFechaLlegada()
                                                 + "\",\"fechaPartida\":\""
@@ -219,7 +216,7 @@ public class ControllerSolicitudTest {
                 when(servicioSolicitud.actualizarSolicitud(eq(1L), any(DTOSolicitud.class)))
                                 .thenReturn(solicitudActualizada);
 
-                mockMvc.perform(MockMvcRequestBuilders.put("/solicitud/actualizarSolicitud/1")
+                mockMvc.perform(MockMvcRequestBuilders.put("/api/solicitud/actualizarSolicitud/1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"id\":1,\"fechaLlegada\":\"" + solicitudActualizada.getFechaLlegada()
                                                 + "\",\"fechaPartida\":\"" + solicitudActualizada.getFechaPartida()
@@ -243,7 +240,7 @@ public class ControllerSolicitudTest {
                  * .thenReturn(ResponseEntity.ok("Solicitud eliminada con éxito."));
                  */
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/solicitud/eliminarSolicitud/{id}", id))
                                 .andExpect(status().isOk())
                                 .andExpect(content().string("Solicitud eliminada con éxito."));
 
@@ -256,7 +253,7 @@ public class ControllerSolicitudTest {
                 doThrow(new EntityNotFoundException("Solicitud no encontrada")).when(servicioSolicitud)
                                 .eliminarSolicitud(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/solicitud/eliminarSolicitud/{id}", id))
                                 .andExpect(status().isNotFound())
                                 .andExpect(content().string("Solicitud no encontrada."));
         }
@@ -267,7 +264,7 @@ public class ControllerSolicitudTest {
                 doThrow(new RuntimeException("Error interno del servidor")).when(servicioSolicitud)
                                 .eliminarSolicitud(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/solicitud/eliminarSolicitud/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/solicitud/eliminarSolicitud/{id}", id))
                                 .andExpect(status().isInternalServerError())
                                 .andExpect(content().string("Error al eliminar la solicitud."));
         }

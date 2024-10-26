@@ -26,6 +26,9 @@ public class ServicioArrendatario {
     @Autowired
     private RepositorioCalificacion repositorioCalificacion;
 
+    @Autowired
+    private RepositorioArrendador repositorioArrendador;
+
     public ServicioArrendatario(RepositorioArrendatario repositorioArrendatario) {
         this.repositorioArrendatario = repositorioArrendatario;
     }
@@ -84,15 +87,40 @@ public class ServicioArrendatario {
     }
 
     public DTOArrendatario createArrendatario(DTOArrendatario dtoArrendatario) {
-        if (repositorioArrendatario.existsByUsuario(dtoArrendatario.getUsuario())) {
+        if (repositorioArrendatario.existsByUsuario(dtoArrendatario.getUsuario()) || 
+            repositorioArrendador.existsByUsuario(dtoArrendatario.getUsuario())) {
             throw new IllegalArgumentException("El arrendatario con este usuario ya existe.");
         }
 
-        dtoArrendatario.setCalificionPromedio(0.0f);
+        initializeFields(dtoArrendatario);
 
         Arrendatario arrendatario = modelMapper.map(dtoArrendatario, Arrendatario.class);
         Arrendatario savedArrendatario = repositorioArrendatario.save(arrendatario);
         return modelMapper.map(savedArrendatario, DTOArrendatario.class);
+    }
+
+    private void initializeFields(DTOArrendatario dtoArrendatario) {
+        if (dtoArrendatario.getUsuario() == null) {
+            dtoArrendatario.setUsuario("");
+        }
+        if (dtoArrendatario.getNombre() == null) {
+            dtoArrendatario.setNombre("");
+        }
+        if (dtoArrendatario.getCorreo() == null) {
+            dtoArrendatario.setCorreo("");
+        }
+        if (dtoArrendatario.getCalificionPromedio() == 0.0f) {
+            dtoArrendatario.setCalificionPromedio(0.0f);
+        }
+        if (dtoArrendatario.getStatus() == 0) {
+            dtoArrendatario.setStatus(0);
+        }
+        if (dtoArrendatario.getSolicitudes() == null) {
+            dtoArrendatario.setSolicitudes(new ArrayList<>());
+        }
+        if (dtoArrendatario.getCalificaciones() == null) {
+            dtoArrendatario.setCalificaciones(new ArrayList<>());
+        }
     }
 
     public DTOArrendatario updateArrendatario(Long id, DTOArrendatario dtoArrendatario) {

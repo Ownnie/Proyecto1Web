@@ -113,45 +113,90 @@ public class ServicioPropiedad {
 
     // Crear una nueva propiedad
     public DTOPropiedad crearPropiedad(DTOPropiedad dtoPropiedad) {
-        Propiedad propiedad = new Propiedad();
-        propiedad.setNombre(dtoPropiedad.getNombre());
-        propiedad.setUbicacion(dtoPropiedad.getUbicacion());
-        propiedad.setParqueadero(dtoPropiedad.isParqueadero());
-        propiedad.setPiscina(dtoPropiedad.isPiscina());
-        propiedad.setCuartos(dtoPropiedad.getCuartos());
-        propiedad.setCamas(dtoPropiedad.getCamas());
-        propiedad.setArea(dtoPropiedad.getArea());
-        propiedad.setCapacidad(dtoPropiedad.getCapacidad());
-        propiedad.setDisponible(dtoPropiedad.isDisponible());
-        propiedad.setPrecioXnoche(dtoPropiedad.getPrecioXnoche());
-        propiedad.setStatus(dtoPropiedad.getStatus());
 
-        // Verify that the arrendadorId exists
+        initializeFields(dtoPropiedad);
+
+        Propiedad propiedad = modelMapper.map(dtoPropiedad, Propiedad.class);
+    
         repositorioArrendador.findById(dtoPropiedad.getArrendadorId())
                 .orElseThrow(() -> new RuntimeException("Arrendador not found"));
+    
 
-        // Set the arrendadorId in the propiedad
-        propiedad.setArrendadorId(dtoPropiedad.getArrendadorId());
 
         Propiedad savedPropiedad = repositorioPropiedad.save(propiedad);
+        return modelMapper.map(savedPropiedad, DTOPropiedad.class);
+    }
 
-        // Map the saved Propiedad back to DTOPropiedad
-        DTOPropiedad result = new DTOPropiedad();
-        result.setId(savedPropiedad.getId());
-        result.setNombre(savedPropiedad.getNombre());
-        result.setUbicacion(savedPropiedad.getUbicacion());
-        result.setParqueadero(savedPropiedad.isParqueadero());
-        result.setPiscina(savedPropiedad.isPiscina());
-        result.setCuartos(savedPropiedad.getCuartos());
-        result.setCamas(savedPropiedad.getCamas());
-        result.setArea(savedPropiedad.getArea());
-        result.setCapacidad(savedPropiedad.getCapacidad());
-        result.setDisponible(savedPropiedad.isDisponible());
-        result.setPrecioXnoche(savedPropiedad.getPrecioXnoche());
-        result.setStatus(savedPropiedad.getStatus());
-        result.setArrendadorId(savedPropiedad.getArrendadorId());
-
-        return result;
+    private void initializeFields(DTOPropiedad dtoPropiedad) {
+        if (dtoPropiedad.getNombre() == null) {
+            dtoPropiedad.setNombre("");
+        }
+        if (dtoPropiedad.getUbicacion() == null) {
+            dtoPropiedad.setUbicacion("");
+        }
+        if (dtoPropiedad.isParqueadero() == false) {
+            dtoPropiedad.setParqueadero(false);
+        }
+        if (dtoPropiedad.isPiscina() == false) {
+            dtoPropiedad.setPiscina(false);
+        }
+        if (dtoPropiedad.getCuartos() == 0) {
+            dtoPropiedad.setCuartos(0);
+        }
+        if (dtoPropiedad.getCamas() == 0) {
+            dtoPropiedad.setCamas(0);
+        }
+        if (dtoPropiedad.getArea() == 0.0f) {
+            dtoPropiedad.setArea(0.0f);
+        }
+        if (dtoPropiedad.getCapacidad() == 0) {
+            dtoPropiedad.setCapacidad(0);
+        }
+        if (dtoPropiedad.isDisponible() == false) {
+            dtoPropiedad.setDisponible(false);
+        }
+        if (dtoPropiedad.getPrecioXnoche() == 0L) {
+            dtoPropiedad.setPrecioXnoche(0L);
+        }
+        if (dtoPropiedad.getStatus() == 0) {
+            dtoPropiedad.setStatus(0);
+        }
+        if (dtoPropiedad.getArrendadorId() == 0L) {
+            dtoPropiedad.setArrendadorId(0L);
+        }
+        if (dtoPropiedad.getCalificionPromedio() == 0.0f) {
+            dtoPropiedad.setCalificionPromedio(0.0f);
+        }
+        if (dtoPropiedad.getCalificaciones() == null) {
+            dtoPropiedad.setCalificaciones(new ArrayList<>());
+        }
+        if (dtoPropiedad.getSolicitudes() == null) {
+            dtoPropiedad.setSolicitudes(new ArrayList<>());
+        }
+        if (dtoPropiedad.getLavanderia() == null) {
+            dtoPropiedad.setLavanderia(false);
+        }
+        if (dtoPropiedad.getWifi() == null) {
+            dtoPropiedad.setWifi(false);
+        }
+        if (dtoPropiedad.getMascotas() == null) {
+            dtoPropiedad.setMascotas(false);
+        }
+        if (dtoPropiedad.getGimnasios() == null) {
+            dtoPropiedad.setGimnasios(false);
+        }
+        if (dtoPropiedad.getZonaJuegos() == null) {
+            dtoPropiedad.setZonaJuegos(false);
+        }
+        if (dtoPropiedad.getAlimentacion() == null) {
+            dtoPropiedad.setAlimentacion(false);
+        }
+        if (dtoPropiedad.getPropiedad() == null) {
+            dtoPropiedad.setPropiedad("");
+        }
+        if (dtoPropiedad.getImagenes() == null) {
+            dtoPropiedad.setImagenes(new ArrayList<>());
+        }
     }
 
     // Actualizar una propiedad existente
@@ -159,17 +204,7 @@ public class ServicioPropiedad {
         Propiedad existingPropiedad = repositorioPropiedad.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
     
-        existingPropiedad.setNombre(dtoPropiedad.getNombre());
-        existingPropiedad.setUbicacion(dtoPropiedad.getUbicacion());
-        existingPropiedad.setParqueadero(dtoPropiedad.isParqueadero());
-        existingPropiedad.setPiscina(dtoPropiedad.isPiscina());
-        existingPropiedad.setCuartos(dtoPropiedad.getCuartos());
-        existingPropiedad.setCamas(dtoPropiedad.getCamas());
-        existingPropiedad.setArea(dtoPropiedad.getArea());
-        existingPropiedad.setCapacidad(dtoPropiedad.getCapacidad());
-        existingPropiedad.setDisponible(dtoPropiedad.isDisponible());
-        existingPropiedad.setPrecioXnoche(dtoPropiedad.getPrecioXnoche());
-        existingPropiedad.setStatus(dtoPropiedad.getStatus());
+        modelMapper.map(dtoPropiedad, existingPropiedad);
         Propiedad updatedPropiedad = repositorioPropiedad.save(existingPropiedad);
         return modelMapper.map(updatedPropiedad, DTOPropiedad.class);
     }

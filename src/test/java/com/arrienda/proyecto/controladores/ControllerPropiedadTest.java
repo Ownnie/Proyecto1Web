@@ -69,7 +69,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.traerPropiedades()).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/propiedades")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/propiedades")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +99,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedad(1L)).thenReturn(propiedad);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/propiedad/1")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/propiedad/1")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -129,7 +129,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedadesPorCamas(5)).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/camas/5")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/camas/5")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -159,7 +159,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedadesDisponibles()).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/disponibles")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/disponibles")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -189,7 +189,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedadesPorCuartos(3)).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/cuartos/3")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/cuartos/3")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -219,7 +219,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedadesPorArea(200.5f)).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/area/200.5")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/area/200.5")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -249,7 +249,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.obtenerPropiedadesPorCapacidad(10)).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/capacidad/10")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/capacidad/10")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -279,7 +279,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.getPropiedades(1L)).thenReturn(propiedades);
 
-                mockMvc.perform(MockMvcRequestBuilders.get("/propiedad/arrendador/1/propiedades")
+                mockMvc.perform(MockMvcRequestBuilders.get("/api/propiedad/arrendador/1/propiedades")
                                 .accept(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -318,7 +318,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.crearPropiedad(any(DTOPropiedad.class))).thenReturn(propiedad);
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/propiedad/crearPropiedad")
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/propiedad/crearPropiedad")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"nombre\":\"Casa de playa\",\"camas\":3}")
                                 .accept(MediaType.APPLICATION_JSON))
@@ -354,7 +354,7 @@ public class ControllerPropiedadTest {
 
                 when(servicioPropiedad.actualizarPropiedad(eq(1L), any(DTOPropiedad.class))).thenReturn(propiedad);
 
-                mockMvc.perform(MockMvcRequestBuilders.put("/propiedad/actualizarPropiedad/1")
+                mockMvc.perform(MockMvcRequestBuilders.put("/api/propiedad/actualizarPropiedad/1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
                                                 "{\"nombre\":\"Casa de playa\",\"ubicacion\":\"Ubicación 1\",\"parqueadero\":true,\"piscina\":true,\"cuartos\":3,\"camas\":5,\"area\":200.5,\"capacidad\":10,\"disponible\":true,\"precioXnoche\":300.0}")
@@ -375,7 +375,7 @@ public class ControllerPropiedadTest {
                  * .thenReturn(ResponseEntity.ok("Propiedad eliminada con éxito."));
                  */
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/propiedad/eliminarPropiedad/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/propiedad/eliminarPropiedad/{id}", id))
                                 .andExpect(status().isOk())
                                 .andExpect(content().string("Propiedad eliminada con éxito."));
 
@@ -388,7 +388,7 @@ public class ControllerPropiedadTest {
                 doThrow(new EntityNotFoundException("Propiedad no encontrada")).when(servicioPropiedad)
                                 .eliminarPropiedad(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/propiedad/eliminarPropiedad/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/propiedad/eliminarPropiedad/{id}", id))
                                 .andExpect(status().isNotFound())
                                 .andExpect(content().string("Propiedad no encontrada."));
         }
@@ -399,7 +399,7 @@ public class ControllerPropiedadTest {
                 doThrow(new RuntimeException("Error interno del servidor")).when(servicioPropiedad)
                                 .eliminarPropiedad(id);
 
-                mockMvc.perform(MockMvcRequestBuilders.delete("/propiedad/eliminarPropiedad/{id}", id))
+                mockMvc.perform(MockMvcRequestBuilders.delete("/api/propiedad/eliminarPropiedad/{id}", id))
                                 .andExpect(status().isInternalServerError())
                                 .andExpect(content().string("Error al eliminar la propiedad."));
         }
