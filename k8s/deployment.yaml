@@ -16,7 +16,7 @@ spec:
       imagePullSecrets:
          - name: github-secret
       containers:
-         - name: estudiante
+         - name: cheeserun-backend
            image: localhost:5000/cheeserun-back
            ports:
               - containerPort: 8080
