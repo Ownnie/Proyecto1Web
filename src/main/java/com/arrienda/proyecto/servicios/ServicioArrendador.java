@@ -1,6 +1,6 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
@@ -30,6 +30,9 @@ public class ServicioArrendador {
 
     @Autowired
     private RepositorioSolicitud repositorioSolicitud;
+
+    @Autowired
+    private RepositorioArrendatario repositorioArrendatario;
 
     
     public ServicioArrendador(RepositorioArrendador repositorioArrendador) {
@@ -88,11 +91,12 @@ public class ServicioArrendador {
     }
 
     public DTOArrendador crearArrendador(DTOArrendador dtoArrendador) {
-        if (repositorioArrendador.existsByUsuario(dtoArrendador.getUsuario())) {
-            throw new IllegalArgumentException("El arrendador con este usuario ya existe.");
+        if (repositorioArrendatario.existsByUsuario(dtoArrendador.getUsuario()) || 
+            repositorioArrendador.existsByUsuario(dtoArrendador.getUsuario())) {
+            throw new IllegalArgumentException("El arrendatario con este usuario ya existe.");
         }
     
-        dtoArrendador.setCalificionPromedio(0.0f);
+        initializeFields(dtoArrendador);
 
         Arrendador arrendador = modelMapper.map(dtoArrendador, Arrendador.class);
         Arrendador savedArrendador = repositorioArrendador.save(arrendador);
@@ -106,6 +110,30 @@ public class ServicioArrendador {
         modelMapper.map(dtoArrendador, existingArrendador);
         Arrendador updatedArrendador = repositorioArrendador.save(existingArrendador);
         return modelMapper.map(updatedArrendador, DTOArrendador.class);
+    }
+
+    private void initializeFields(DTOArrendador dtoArrendador) {
+        if (dtoArrendador.getUsuario() == null) {
+            dtoArrendador.setUsuario("");
+        }
+        if (dtoArrendador.getNombre() == null) {
+            dtoArrendador.setNombre("");
+        }
+        if (dtoArrendador.getCorreo() == null) {
+            dtoArrendador.setCorreo("");
+        }
+        if (dtoArrendador.getCalificionPromedio() == 0.0f) {
+            dtoArrendador.setCalificionPromedio(0.0f);
+        }
+        if (dtoArrendador.getStatus() == 0) {
+            dtoArrendador.setStatus(0);
+        }
+        if (dtoArrendador.getPropiedades() == null) {
+            dtoArrendador.setPropiedades(new ArrayList<>());
+        }
+        if (dtoArrendador.getCalificaciones() == null) {
+            dtoArrendador.setCalificaciones(new ArrayList<>());
+        }
     }
 
     @Transactional

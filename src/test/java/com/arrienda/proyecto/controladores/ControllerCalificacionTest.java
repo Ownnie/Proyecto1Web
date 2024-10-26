@@ -50,7 +50,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.traerCalificaciones()).thenReturn(calificaciones);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calificacion/calificaciones")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calificacion/calificaciones")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -73,7 +73,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.traerCalificacionPorId(id)).thenReturn(calificacion);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calificacion/calificaciones/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calificacion/calificaciones/{id}", id)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +99,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.getCalificaciones(1L, 0)).thenReturn(calificacionesArrendador);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calificacion/arrendador/1/calificaciones")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calificacion/arrendador/1/calificaciones")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -126,7 +126,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.getCalificaciones(1L, 1)).thenReturn(calificacionesArrendatario);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calificacion/arrendatario/1/calificaciones")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calificacion/arrendatario/1/calificaciones")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -153,7 +153,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.getCalificaciones(1L, 2)).thenReturn(calificacionesPropiedad);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/calificacion/propiedad/1/calificaciones")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/calificacion/propiedad/1/calificaciones")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -176,7 +176,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.guardarCalificacion(any(DTOCalificacion.class))).thenReturn(calificacion);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/calificacion/crearCalificacion")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/calificacion/crearCalificacion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(calificacionJson))
                 .andExpect(status().isOk())
@@ -199,7 +199,7 @@ public class ControllerCalificacionTest {
 
         when(servicioCalificacion.actualizarCalificacion(eq(id), any(DTOCalificacion.class))).thenReturn(calificacion);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/calificacion/actualizarCalificacion/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/calificacion/actualizarCalificacion/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(calificacionJson))
                 .andExpect(status().isOk())
@@ -217,7 +217,7 @@ public class ControllerCalificacionTest {
          * .thenReturn(ResponseEntity.ok("Calificación eliminada con éxito."));
          */
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/calificacion/eliminarCalificaciones/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/calificacion/eliminarCalificaciones/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Calificación eliminada con éxito."));
 
@@ -230,7 +230,7 @@ public class ControllerCalificacionTest {
         doThrow(new EntityNotFoundException("Calificación no encontrada")).when(servicioCalificacion)
                 .eliminarCalificacion(id);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/calificacion/eliminarCalificaciones/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/calificacion/eliminarCalificaciones/{id}", id))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Calificación no encontrada."));
     }
@@ -241,7 +241,7 @@ public class ControllerCalificacionTest {
         doThrow(new RuntimeException("Error interno del servidor")).when(servicioCalificacion)
                 .eliminarCalificacion(id);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/calificacion/eliminarCalificaciones/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/calificacion/eliminarCalificaciones/{id}", id))
                 .andExpect(status().isInternalServerError())
                 .andExpect(content().string("Error al eliminar la calificación."));
     }

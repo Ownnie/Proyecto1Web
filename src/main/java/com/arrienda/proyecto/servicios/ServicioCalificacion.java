@@ -52,6 +52,9 @@ public class ServicioCalificacion {
 
     // Guardar una nueva calificación
     public DTOCalificacion guardarCalificacion(DTOCalificacion dtoCalificacion) {
+
+        initializeFields(dtoCalificacion);
+
         Calificacion calificacion = modelMapper.map(dtoCalificacion, Calificacion.class);
         Calificacion savedCalificacion = repositorioCalificacion.save(calificacion);
 
@@ -90,6 +93,24 @@ public class ServicioCalificacion {
             sum += calificacion.getCalificacion();
         }
         return sum / calificaciones.size();
+    }
+
+    private void initializeFields(DTOCalificacion dtoCalificacion) {
+        if (dtoCalificacion.getCalificacion() == 0.0f) {
+            dtoCalificacion.setCalificacion(0.0f);
+        }
+        if (dtoCalificacion.getComentario() == null) {
+            dtoCalificacion.setComentario("");
+        }
+        if (dtoCalificacion.getStatus() == 0) {
+            dtoCalificacion.setStatus(0);
+        }
+        if (dtoCalificacion.getIdTipo() == 0) {
+            dtoCalificacion.setIdTipo(0);
+        }
+        if (dtoCalificacion.getIdCalificado() == 0L) {
+            dtoCalificacion.setIdCalificado(0L);
+        }
     }
 
     // Actualizar una calificación existente

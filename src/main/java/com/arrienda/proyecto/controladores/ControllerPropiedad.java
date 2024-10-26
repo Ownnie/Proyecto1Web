@@ -20,7 +20,7 @@ import com.arrienda.proyecto.servicios.ServicioPropiedad;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/propiedad")
+@RequestMapping("/api/propiedad")
 public class ControllerPropiedad {
     @Autowired
     private ServicioPropiedad servicioPropiedad;

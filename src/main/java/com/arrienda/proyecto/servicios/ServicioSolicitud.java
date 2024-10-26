@@ -1,21 +1,22 @@
 package com.arrienda.proyecto.servicios;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.sql.Date;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import com.arrienda.proyecto.repositorios.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ServicioSolicitud {
+
+    private static final Logger logger = LoggerFactory.getLogger(ServicioSolicitud.class);
+
 
     @Autowired
     private RepositorioSolicitud repositorioSolicitud;
@@ -65,31 +66,69 @@ public class ServicioSolicitud {
 
     // Crear una nueva solicitud
     public DTOSolicitud crearSolicitud(DTOSolicitud dtoSolicitud) {
+
         Arrendatario arrendatario = repositorioArrendatario.findById(dtoSolicitud.getArrendatarioId())
-                .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
-
+            .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
+    
         Propiedad propiedad = repositorioPropiedad.findById(dtoSolicitud.getPropiedadId())
-                .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
-
-        if (propiedad.getArrendadorId() == arrendatario.getId()) {
-            throw new RuntimeException("No puedes solicitar una propiedad que tú mismo arriendas");
-        }
+            .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
+    
         if (dtoSolicitud.getFechaLlegada().after(dtoSolicitud.getFechaPartida())) {
             throw new RuntimeException("La fecha de inicio debe ser anterior a la fecha de fin");
         }
-
+    
         boolean existeSolicitudAprobada = repositorioSolicitud
                 .existsByPropiedadIdAndAceptacionAndFechaLlegadaLessThanEqualAndFechaPartidaGreaterThanEqual(
                         dtoSolicitud.getPropiedadId(), true, dtoSolicitud.getFechaPartida(),
                         dtoSolicitud.getFechaLlegada());
-
+    
         if (existeSolicitudAprobada) {
             throw new RuntimeException("Ya existe una solicitud aprobada que se cruza con las fechas proporcionadas");
         }
-
+    
+        initializeFields(dtoSolicitud);
+    
         Solicitud solicitud = modelMapper.map(dtoSolicitud, Solicitud.class);
         Solicitud savedSolicitud = repositorioSolicitud.save(solicitud);
+    
+        propiedad.getSolicitudes().add(savedSolicitud);
+        repositorioPropiedad.save(propiedad);
+    
+        arrendatario.getSolicitudes().add(savedSolicitud);
+        repositorioArrendatario.save(arrendatario);
+    
         return modelMapper.map(savedSolicitud, DTOSolicitud.class);
+    }
+
+    private void initializeFields(DTOSolicitud dtoSolicitud) {
+        if (!dtoSolicitud.isAceptacion()) {
+            dtoSolicitud.setAceptacion(false);
+        }
+        if (dtoSolicitud.getCantidadPersonas() == 0) {
+            dtoSolicitud.setCantidadPersonas(0);
+        }
+        if (dtoSolicitud.getStatus() == 0) {
+            dtoSolicitud.setStatus(0);
+        }
+        if (dtoSolicitud.getPropiedadId() == 0) {
+            dtoSolicitud.setPropiedadId(0L);
+        }
+        if (dtoSolicitud.getArrendatarioId() == 0) {
+            dtoSolicitud.setArrendatarioId(0L);
+        }
+    }
+
+    public DTOSolicitud aceptarSolicitud(Long solicitudId) {
+        Solicitud solicitud = repositorioSolicitud.findById(solicitudId)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitud no encontrada"));
+    
+        if (!solicitud.isAceptacion()) {
+            solicitud.setAceptacion(true);
+            Solicitud updatedSolicitud = repositorioSolicitud.save(solicitud);
+            return modelMapper.map(updatedSolicitud, DTOSolicitud.class);
+        } else {
+            throw new RuntimeException("La solicitud ya está aceptada");
+        }
     }
 
     // Actualizar una solicitud existente
@@ -105,7 +144,7 @@ public class ServicioSolicitud {
 
     // Eliminar una solicitud
     public void eliminarSolicitud(Long id) {
-        Solicitud solicitud = repositorioSolicitud.findById(id)
+        repositorioSolicitud.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Solicitud no encontrada"));
 
         repositorioSolicitud.deleteById(id);

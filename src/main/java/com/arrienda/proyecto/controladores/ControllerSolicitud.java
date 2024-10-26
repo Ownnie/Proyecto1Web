@@ -20,7 +20,7 @@ import com.arrienda.proyecto.servicios.ServicioSolicitud;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
-@RequestMapping("/solicitud")
+@RequestMapping("/api/solicitud")
 public class ControllerSolicitud {
     @Autowired
     private ServicioSolicitud servicioSolicitud;
@@ -58,6 +58,11 @@ public class ControllerSolicitud {
     @PutMapping("/actualizarSolicitud/{id}")
     public DTOSolicitud actualizarSolicitud(@PathVariable Long id, @RequestBody DTOSolicitud solicitud) {
         return servicioSolicitud.actualizarSolicitud(id, solicitud);
+    }
+
+    @PutMapping("/aceptarSolicitud/{id}")
+    public DTOSolicitud aceptarSolicitud(@PathVariable Long id) {
+        return servicioSolicitud.aceptarSolicitud(id);
     }
 
     @DeleteMapping("/eliminarSolicitud/{id}")
