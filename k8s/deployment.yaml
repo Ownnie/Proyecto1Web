@@ -29,7 +29,7 @@ metadata:
   namespace: back-cheeserun
 spec:
   selector:
-    app: estudiante
+    app: cheeserun-backend
   ports:
     - protocol: TCP
       port: 8080
