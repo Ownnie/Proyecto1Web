@@ -24,7 +24,7 @@ public class ArrendadorTest {
         arrendador.setStatus(0);
         arrendador.setPropiedades(new ArrayList<>());
         arrendador.setCalificaciones(new ArrayList<>());
-        arrendador.setCalificionPromedio(0.0f);
+        arrendador.setCalificacionPromedio(0.0f);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ArrendadorTest {
         assertEquals(0, arrendador.getStatus());
         assertNotNull(arrendador.getPropiedades());
         assertNotNull(arrendador.getCalificaciones());
-        assertEquals(0.0f,arrendador.getCalificionPromedio());
+        assertEquals(0.0f,arrendador.getCalificacionPromedio());
     }
 
     @Test

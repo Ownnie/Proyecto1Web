@@ -122,8 +122,8 @@ public class ServicioArrendador {
         if (dtoArrendador.getCorreo() == null) {
             dtoArrendador.setCorreo("");
         }
-        if (dtoArrendador.getCalificionPromedio() == 0.0f) {
-            dtoArrendador.setCalificionPromedio(0.0f);
+        if (dtoArrendador.getCalificacionPromedio() == 0.0f) {
+            dtoArrendador.setCalificacionPromedio(0.0f);
         }
         if (dtoArrendador.getStatus() == 0) {
             dtoArrendador.setStatus(0);
@@ -166,7 +166,7 @@ public class ServicioArrendador {
     void actualizarPromedioCalificacion(Long id, float calificacionPromedio) {
         Arrendador arrendador = repositorioArrendador.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Arrendador no encontrado"));
-        arrendador.setCalificionPromedio(calificacionPromedio);
+        arrendador.setCalificacionPromedio(calificacionPromedio);
         repositorioArrendador.save(arrendador);
     }
 

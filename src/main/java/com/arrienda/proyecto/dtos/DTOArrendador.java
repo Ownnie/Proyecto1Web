@@ -16,7 +16,7 @@ public class DTOArrendador {
     private String usuario;
     private String nombre;
     private String correo;
-    private float calificionPromedio;
+    private float calificacionPromedio;
     private int status;
     private List<DTOPropiedad> propiedades;
     private List<DTOCalificacion> calificaciones;

@@ -15,7 +15,7 @@ public class DTOArrendatario {
     private String usuario;
     private String nombre;
     private String correo;
-    private float calificionPromedio;
+    private float calificacionPromedio;
     private int status;
     private List<DTOSolicitud> solicitudes;
     protected List<DTOCalificacion> calificaciones;

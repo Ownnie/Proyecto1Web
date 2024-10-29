@@ -31,7 +31,7 @@ public class PropiedadTest {
         propiedad.setArrendadorId(2L);
         propiedad.setCalificaciones(new ArrayList<>());
         propiedad.setSolicitudes(new ArrayList<>());
-        propiedad.setCalificionPromedio(0.0f);
+        propiedad.setCalificacionPromedio(0.0f);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class PropiedadTest {
         assertEquals(2L, propiedad.getArrendadorId());
         assertNotNull(propiedad.getCalificaciones());
         assertNotNull(propiedad.getSolicitudes());
-        assertEquals(0.0f,propiedad.getCalificionPromedio());
+        assertEquals(0.0f,propiedad.getCalificacionPromedio());
     }
 
     @Test

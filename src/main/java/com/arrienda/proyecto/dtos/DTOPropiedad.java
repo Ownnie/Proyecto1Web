@@ -26,7 +26,7 @@ public class DTOPropiedad {
     private long precioXnoche;
     protected int status;
     private long arrendadorId;
-    private float calificionPromedio;
+    private float calificacionPromedio;
 
     private List<DTOCalificacion> calificaciones;
     private List<DTOSolicitud> solicitudes;

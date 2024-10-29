@@ -31,7 +31,7 @@ public class Propiedad {
     private long precioXnoche;
     protected int status;
     private long arrendadorId;
-    private float calificionPromedio;
+    private float calificacionPromedio;
 
     @OneToMany
     private List<Calificacion> calificaciones;
