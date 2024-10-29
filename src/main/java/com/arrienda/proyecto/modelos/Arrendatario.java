@@ -31,7 +31,7 @@ public class Arrendatario {
     private String contrasena;
     private String nombre;
     private String correo;
-    private float calificionPromedio;
+    private float calificacionPromedio;
     protected int status;
 
     @OneToMany

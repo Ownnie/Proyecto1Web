@@ -164,8 +164,8 @@ public class ServicioPropiedad {
         if (dtoPropiedad.getArrendadorId() == 0L) {
             dtoPropiedad.setArrendadorId(0L);
         }
-        if (dtoPropiedad.getCalificionPromedio() == 0.0f) {
-            dtoPropiedad.setCalificionPromedio(0.0f);
+        if (dtoPropiedad.getCalificacionPromedio() == 0.0f) {
+            dtoPropiedad.setCalificacionPromedio(0.0f);
         }
         if (dtoPropiedad.getCalificaciones() == null) {
             dtoPropiedad.setCalificaciones(new ArrayList<>());
@@ -230,7 +230,7 @@ public class ServicioPropiedad {
     void actualizarPromedioCalificacion(Long id, float calificacionPromedio) {
         Propiedad propiedad = repositorioPropiedad.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Propiedad no encontrada"));
-                propiedad.setCalificionPromedio(calificacionPromedio);
+                propiedad.setCalificacionPromedio(calificacionPromedio);
         repositorioPropiedad.save(propiedad);
     }
 
