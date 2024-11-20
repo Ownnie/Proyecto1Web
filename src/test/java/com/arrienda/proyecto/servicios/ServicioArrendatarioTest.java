@@ -101,7 +101,7 @@ public class ServicioArrendatarioTest {
 
     @Test
     public void testCreateArrendatario() {
-        DTOArrendatario dtoArrendatario = new DTOArrendatario();
+        DTOArrendatarioContrasena dtoArrendatario = new DTOArrendatarioContrasena();
         dtoArrendatario.setUsuario("nuevoUsuario");
 
         Arrendatario arrendatario = new Arrendatario();
@@ -109,7 +109,7 @@ public class ServicioArrendatarioTest {
         when(repositorioArrendatario.existsByUsuario(dtoArrendatario.getUsuario())).thenReturn(false);
         when(modelMapper.map(dtoArrendatario, Arrendatario.class)).thenReturn(arrendatario);
         when(repositorioArrendatario.save(arrendatario)).thenReturn(arrendatario);
-        when(modelMapper.map(arrendatario, DTOArrendatario.class)).thenReturn(dtoArrendatario);
+        when(modelMapper.map(arrendatario, DTOArrendatarioContrasena.class)).thenReturn(dtoArrendatario);
 
         DTOArrendatario resultado = servicioArrendatario.createArrendatario(dtoArrendatario);
 
@@ -120,7 +120,7 @@ public class ServicioArrendatarioTest {
 
     @Test
     public void testCreateArrendatarioUsuarioExistente() {
-        DTOArrendatario dtoArrendatario = new DTOArrendatario();
+        DTOArrendatarioContrasena dtoArrendatario = new DTOArrendatarioContrasena();
         dtoArrendatario.setUsuario("usuarioExistente");
 
         when(repositorioArrendatario.existsByUsuario(dtoArrendatario.getUsuario())).thenReturn(true);
@@ -137,7 +137,7 @@ public class ServicioArrendatarioTest {
     @Test
     public void testUpdateArrendatario() {
         Long id = 1L;
-        DTOArrendatario dtoArrendatario = new DTOArrendatario();
+        DTOArrendatarioContrasena dtoArrendatario = new DTOArrendatarioContrasena();
         dtoArrendatario.setNombre("Nombre Actualizado");
 
         Arrendatario arrendatario = new Arrendatario();
@@ -145,7 +145,7 @@ public class ServicioArrendatarioTest {
         when(repositorioArrendatario.findById(id)).thenReturn(Optional.of(arrendatario));
         when(repositorioArrendatario.save(arrendatario)).thenReturn(arrendatario);
         when(modelMapper.map(dtoArrendatario, Arrendatario.class)).thenReturn(arrendatario);
-        when(modelMapper.map(arrendatario, DTOArrendatario.class)).thenReturn(dtoArrendatario);
+        when(modelMapper.map(arrendatario, DTOArrendatarioContrasena.class)).thenReturn(dtoArrendatario);
 
         DTOArrendatario resultado = servicioArrendatario.updateArrendatario(id, dtoArrendatario);
 

@@ -28,12 +28,13 @@ public class ControllerArrendatario {
     }
 
     @PostMapping("/crearArrendatario")
-    public DTOArrendatario crearArrendatario(@RequestBody DTOArrendatario arrendatario) {
+    public DTOArrendatario crearArrendatario(@RequestBody DTOArrendatarioContrasena arrendatario) {
         return servicioArrendatario.createArrendatario(arrendatario);
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public DTOArrendatario actualizarArrendatario(@PathVariable Long id, @RequestBody DTOArrendatario arrendatario) {
+    public DTOArrendatario actualizarArrendatario(@PathVariable Long id,
+            @RequestBody DTOArrendatarioContrasena arrendatario) {
         return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
 

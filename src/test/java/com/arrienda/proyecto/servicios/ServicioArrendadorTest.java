@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.arrienda.proyecto.dtos.DTOArrendador;
+import com.arrienda.proyecto.dtos.DTOArrendadorContrasena;
 import com.arrienda.proyecto.modelos.Arrendador;
 import com.arrienda.proyecto.repositorios.RepositorioArrendador;
 
@@ -107,7 +108,7 @@ public class ServicioArrendadorTest {
 
     @Test
     public void testCrearArrendador() {
-        DTOArrendador dtoArrendador = new DTOArrendador();
+        DTOArrendadorContrasena dtoArrendador = new DTOArrendadorContrasena();
         dtoArrendador.setUsuario("juan");
 
         Arrendador arrendador = new Arrendador();
@@ -115,7 +116,7 @@ public class ServicioArrendadorTest {
         when(repositorioArrendador.existsByUsuario(dtoArrendador.getUsuario())).thenReturn(false);
         when(modelMapper.map(dtoArrendador, Arrendador.class)).thenReturn(arrendador);
         when(repositorioArrendador.save(arrendador)).thenReturn(arrendador);
-        when(modelMapper.map(arrendador, DTOArrendador.class)).thenReturn(dtoArrendador);
+        when(modelMapper.map(arrendador, DTOArrendadorContrasena.class)).thenReturn(dtoArrendador);
 
         DTOArrendador result = servicioArrendador.crearArrendador(dtoArrendador);
 
@@ -127,7 +128,7 @@ public class ServicioArrendadorTest {
     @Test
     public void testCrearArrendadorUsuarioExistente() {
         // Crea un DTOArrendador con un usuario que ya existe
-        DTOArrendador dtoArrendador = new DTOArrendador();
+        DTOArrendadorContrasena dtoArrendador = new DTOArrendadorContrasena();
         dtoArrendador.setUsuario("usuarioExistente");
 
         // Configura el comportamiento del mock del repositorio para simular que el
@@ -150,7 +151,7 @@ public class ServicioArrendadorTest {
     @Test
     public void testActualizarArrendador() {
         Long id = 1L;
-        DTOArrendador dtoArrendador = new DTOArrendador();
+        DTOArrendadorContrasena dtoArrendador = new DTOArrendadorContrasena();
         dtoArrendador.setNombre("Juan Actualizado");
 
         Arrendador arrendador = new Arrendador();
@@ -158,7 +159,7 @@ public class ServicioArrendadorTest {
         when(repositorioArrendador.findById(id)).thenReturn(Optional.of(arrendador));
         when(repositorioArrendador.save(arrendador)).thenReturn(arrendador);
         when(modelMapper.map(dtoArrendador, Arrendador.class)).thenReturn(arrendador);
-        when(modelMapper.map(arrendador, DTOArrendador.class)).thenReturn(dtoArrendador);
+        when(modelMapper.map(arrendador, DTOArrendadorContrasena.class)).thenReturn(dtoArrendador);
 
         DTOArrendador result = servicioArrendador.actualizarArrendador(id, dtoArrendador);
 
