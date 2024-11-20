@@ -2,6 +2,7 @@ package com.arrienda.proyecto.controladores;
 
 import jakarta.persistence.EntityNotFoundException;
 import com.arrienda.proyecto.dtos.DTOArrendador;
+import com.arrienda.proyecto.dtos.DTOArrendadorContrasena;
 import com.arrienda.proyecto.servicios.ServicioArrendador;
 
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ public class ControllerArrendadorTest {
                 arrendador.setNombre("Juan");
                 arrendador.setCorreo("juan@example.com");
 
-                when(servicioArrendador.crearArrendador(any(DTOArrendador.class))).thenReturn(arrendador);
+                when(servicioArrendador.crearArrendador(any(DTOArrendadorContrasena.class))).thenReturn(arrendador);
 
                 mockMvc.perform(MockMvcRequestBuilders.post("/api/arrendador/crearArrendador")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +83,7 @@ public class ControllerArrendadorTest {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(content().json(arrendadorJson));
 
-                verify(servicioArrendador, times(1)).crearArrendador(any(DTOArrendador.class));
+                verify(servicioArrendador, times(1)).crearArrendador(any(DTOArrendadorContrasena.class));
         }
 
         @Test
@@ -94,7 +95,8 @@ public class ControllerArrendadorTest {
                 arrendador.setNombre("Juan Actualizado");
                 arrendador.setCorreo("juan.actualizado@example.com");
 
-                when(servicioArrendador.actualizarArrendador(eq(id), any(DTOArrendador.class))).thenReturn(arrendador);
+                when(servicioArrendador.actualizarArrendador(eq(id), any(DTOArrendadorContrasena.class)))
+                                .thenReturn(arrendador);
 
                 mockMvc.perform(MockMvcRequestBuilders.put("/api/arrendador/actualizarArrendador/{id}", id)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -103,7 +105,7 @@ public class ControllerArrendadorTest {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(content().json(arrendadorJson));
 
-                verify(servicioArrendador, times(1)).actualizarArrendador(eq(id), any(DTOArrendador.class));
+                verify(servicioArrendador, times(1)).actualizarArrendador(eq(id), any(DTOArrendadorContrasena.class));
         }
 
         @Test

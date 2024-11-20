@@ -75,7 +75,8 @@ public class ControllerArrendatarioTest {
                 arrendatario.setNombre("Juan");
                 arrendatario.setCorreo("juan@example.com");
 
-                when(servicioArrendatario.createArrendatario(any(DTOArrendatario.class))).thenReturn(arrendatario);
+                when(servicioArrendatario.createArrendatario(any(DTOArrendatarioContrasena.class)))
+                                .thenReturn(arrendatario);
 
                 mockMvc.perform(MockMvcRequestBuilders.post("/api/arrendatario/crearArrendatario")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -85,7 +86,7 @@ public class ControllerArrendatarioTest {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(content().json(arrendatarioJson));
 
-                verify(servicioArrendatario, times(1)).createArrendatario(any(DTOArrendatario.class));
+                verify(servicioArrendatario, times(1)).createArrendatario(any(DTOArrendatarioContrasena.class));
         }
 
         @Test
@@ -97,7 +98,7 @@ public class ControllerArrendatarioTest {
                 arrendatario.setNombre("Juan Actualizado");
                 arrendatario.setCorreo("juan.actualizado@example.com");
 
-                when(servicioArrendatario.updateArrendatario(eq(id), any(DTOArrendatario.class)))
+                when(servicioArrendatario.updateArrendatario(eq(id), any(DTOArrendatarioContrasena.class)))
                                 .thenReturn(arrendatario);
 
                 mockMvc.perform(MockMvcRequestBuilders.put("/api/arrendatario/actualizarArrendatario/{id}", id)
@@ -107,7 +108,7 @@ public class ControllerArrendatarioTest {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(content().json(arrendatarioJson));
 
-                verify(servicioArrendatario, times(1)).updateArrendatario(eq(id), any(DTOArrendatario.class));
+                verify(servicioArrendatario, times(1)).updateArrendatario(eq(id), any(DTOArrendatarioContrasena.class));
         }
 
         @Test

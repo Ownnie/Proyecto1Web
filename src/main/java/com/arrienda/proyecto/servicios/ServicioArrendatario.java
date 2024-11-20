@@ -5,7 +5,14 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+
 import com.arrienda.proyecto.repositorios.*;
+import com.arrienda.proyecto.seguridad.CustomUserDetailService;
+import com.arrienda.proyecto.seguridad.jwt.JWTTokenService;
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.modelos.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +20,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class ServicioArrendatario {
-    
+
     @Autowired
     ModelMapper modelMapper;
 
@@ -29,8 +36,16 @@ public class ServicioArrendatario {
     @Autowired
     private RepositorioArrendador repositorioArrendador;
 
-    public ServicioArrendatario(RepositorioArrendatario repositorioArrendatario) {
+    private final JWTTokenService jwtTokenService;
+    private final CustomUserDetailService customUserDetailService;
+    private final AuthenticationManager authenticationManager;
+
+    public ServicioArrendatario(RepositorioArrendatario repositorioArrendatario, JWTTokenService jwtTokenService,
+            CustomUserDetailService customUserDetailService, AuthenticationManager authenticationManager) {
         this.repositorioArrendatario = repositorioArrendatario;
+        this.jwtTokenService = jwtTokenService;
+        this.customUserDetailService = customUserDetailService;
+        this.authenticationManager = authenticationManager;
     }
 
     public List<DTOArrendatario> getAllArrendatarios() {
@@ -39,13 +54,15 @@ public class ServicioArrendatario {
                     .map(arrendatario -> {
                         DTOArrendatario dtoArrendatario = modelMapper.map(arrendatario, DTOArrendatario.class);
 
-                        List<Solicitud> solicitudes = repositorioSolicitud.findSolicitudesByArrendatarioId(arrendatario.getId());
+                        List<Solicitud> solicitudes = repositorioSolicitud
+                                .findSolicitudesByArrendatarioId(arrendatario.getId());
                         List<DTOSolicitud> dtoSolicitudes = solicitudes.stream()
                                 .map(solicitud -> modelMapper.map(solicitud, DTOSolicitud.class))
                                 .collect(Collectors.toList());
                         dtoArrendatario.setSolicitudes(dtoSolicitudes);
 
-                        List<Calificacion> calificaciones = repositorioCalificacion.findByIdCalificadoAndIdTipo(arrendatario.getId(), 1);
+                        List<Calificacion> calificaciones = repositorioCalificacion
+                                .findByIdCalificadoAndIdTipo(arrendatario.getId(), 1);
                         List<DTOCalificacion> dtoCalificaciones = calificaciones.stream()
                                 .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
                                 .collect(Collectors.toList());
@@ -74,7 +91,8 @@ public class ServicioArrendatario {
             dtoArrendatario.setSolicitudes(dtoSolicitudes);
 
             // Fetch and map calificaciones
-            List<Calificacion> calificaciones = repositorioCalificacion.findByIdCalificadoAndIdTipo(arrendatario.getId(), 1);
+            List<Calificacion> calificaciones = repositorioCalificacion
+                    .findByIdCalificadoAndIdTipo(arrendatario.getId(), 1);
             List<DTOCalificacion> dtoCalificaciones = calificaciones.stream()
                     .map(calificacion -> modelMapper.map(calificacion, DTOCalificacion.class))
                     .collect(Collectors.toList());
@@ -86,20 +104,20 @@ public class ServicioArrendatario {
         }
     }
 
-    public DTOArrendatario createArrendatario(DTOArrendatario dtoArrendatario) {
-        if (repositorioArrendatario.existsByUsuario(dtoArrendatario.getUsuario()) || 
-            repositorioArrendador.existsByUsuario(dtoArrendatario.getUsuario())) {
+    public DTOArrendatario createArrendatario(DTOArrendatarioContrasena dtoArrendatarioContrasena) {
+        if (repositorioArrendatario.existsByUsuario(dtoArrendatarioContrasena.getUsuario()) ||
+                repositorioArrendador.existsByUsuario(dtoArrendatarioContrasena.getUsuario())) {
             throw new IllegalArgumentException("El arrendatario con este usuario ya existe.");
         }
 
-        initializeFields(dtoArrendatario);
+        initializeFields(dtoArrendatarioContrasena);
 
-        Arrendatario arrendatario = modelMapper.map(dtoArrendatario, Arrendatario.class);
+        Arrendatario arrendatario = modelMapper.map(dtoArrendatarioContrasena, Arrendatario.class);
         Arrendatario savedArrendatario = repositorioArrendatario.save(arrendatario);
         return modelMapper.map(savedArrendatario, DTOArrendatario.class);
     }
 
-    private void initializeFields(DTOArrendatario dtoArrendatario) {
+    private void initializeFields(DTOArrendatarioContrasena dtoArrendatario) {
         if (dtoArrendatario.getUsuario() == null) {
             dtoArrendatario.setUsuario("");
         }
@@ -123,7 +141,7 @@ public class ServicioArrendatario {
         }
     }
 
-    public DTOArrendatario updateArrendatario(Long id, DTOArrendatario dtoArrendatario) {
+    public DTOArrendatario updateArrendatario(Long id, DTOArrendatarioContrasena dtoArrendatario) {
         Arrendatario existingArrendatario = repositorioArrendatario.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
 
@@ -154,8 +172,31 @@ public class ServicioArrendatario {
     void actualizarPromedioCalificacion(Long id, float calificacionPromedio) {
         Arrendatario arrendatario = repositorioArrendatario.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Arrendatario no encontrado"));
-                arrendatario.setCalificacionPromedio(calificacionPromedio);
+        arrendatario.setCalificacionPromedio(calificacionPromedio);
         repositorioArrendatario.save(arrendatario);
+    }
+
+    public String login(String username, String password) {
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+        if (authentication.isAuthenticated()) {
+            return jwtTokenService.generarToken(customUserDetailService.getArrendadorDetail().getId(),
+                    customUserDetailService.getArrendadorDetail().getUsuario());
+        } else {
+            throw new BadCredentialsException("Usuario o contraseña incorrectos");
+        }
+    }
+
+    public DTOArrendatario autorizacion(Authentication auth) {
+        Optional<Arrendatario> arrendatario = repositorioArrendatario.findByUsuario(auth.getName());
+
+        if (arrendatario.isPresent()) {
+            return modelMapper.map(arrendatario, DTOArrendatario.class);
+        } else {
+            throw new EntityNotFoundException("Arrendador no encontrado");
+
+        }
     }
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arrienda.proyecto.dtos.DTOArrendador;
+import com.arrienda.proyecto.dtos.DTOArrendadorContrasena;
 import com.arrienda.proyecto.servicios.ServicioArrendador;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -37,12 +38,12 @@ public class ControllerArrendador {
     }
 
     @PostMapping("/crearArrendador")
-    public DTOArrendador crearArrendador(@RequestBody DTOArrendador arrendador) {
+    public DTOArrendador crearArrendador(@RequestBody DTOArrendadorContrasena arrendador) {
         return servicioArrendador.crearArrendador(arrendador);
     }
 
     @PutMapping("/actualizarArrendador/{id}")
-    public DTOArrendador actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendador arrendador) {
+    public DTOArrendador actualizarArrendador(@PathVariable Long id, @RequestBody DTOArrendadorContrasena arrendador) {
         return servicioArrendador.actualizarArrendador(id, arrendador);
     }
 
