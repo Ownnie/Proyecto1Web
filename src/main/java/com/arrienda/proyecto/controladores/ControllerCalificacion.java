@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,42 +28,68 @@ public class ControllerCalificacion {
     private ServicioCalificacion servicioCalificacion;
 
     @GetMapping("/calificaciones")
-    public List<DTOCalificacion> getAllCalificaciones() {
+    public List<DTOCalificacion> getAllCalificaciones(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.traerCalificaciones();
     }
 
     @GetMapping("/calificaciones/{id}")
-    public DTOCalificacion getCalificacionById(@PathVariable Long id) {
+    public DTOCalificacion getCalificacionById(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.traerCalificacionPorId(id);
+
     }
 
     @GetMapping("/arrendador/{id}/calificaciones")
-    public List<DTOCalificacion> getCalificacionesArrendador(@PathVariable Long id) {
+    public List<DTOCalificacion> getCalificacionesArrendador(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.getCalificaciones(id, 0);
     }
 
     @GetMapping("/arrendatario/{id}/calificaciones")
-    public List<DTOCalificacion> getCalificacionesArrendatario(@PathVariable Long id) {
+    public List<DTOCalificacion> getCalificacionesArrendatario(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.getCalificaciones(id, 1);
     }
 
     @GetMapping("/propiedad/{id}/calificaciones")
-    public List<DTOCalificacion> getCalificacionesPropiedad(@PathVariable Long id) {
+    public List<DTOCalificacion> getCalificacionesPropiedad(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.getCalificaciones(id, 2);
     }
 
     @PostMapping("/crearCalificacion")
-    public DTOCalificacion crearCalificacion(@RequestBody DTOCalificacion calificacion) {
+    public DTOCalificacion crearCalificacion(Authentication authentication, @RequestBody DTOCalificacion calificacion) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.guardarCalificacion(calificacion);
     }
 
     @PutMapping("/actualizarCalificacion/{id}")
-    public DTOCalificacion actualizarCalificacion(@PathVariable Long id, @RequestBody DTOCalificacion calificacion) {
+    public DTOCalificacion actualizarCalificacion(Authentication authentication, @PathVariable Long id,
+            @RequestBody DTOCalificacion calificacion) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioCalificacion.actualizarCalificacion(id, calificacion);
     }
 
     @DeleteMapping("/eliminarCalificaciones/{id}")
-    public ResponseEntity<String> eliminarCalificacion(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarCalificacion(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         try {
             servicioCalificacion.eliminarCalificacion(id);
             return ResponseEntity.ok("Calificación eliminada con éxito.");

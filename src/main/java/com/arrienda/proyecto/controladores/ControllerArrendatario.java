@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.arrienda.proyecto.dtos.*;
 import com.arrienda.proyecto.servicios.*;
+import org.springframework.security.core.Authentication;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -18,28 +19,45 @@ public class ControllerArrendatario {
     private ServicioArrendatario servicioArrendatario;
 
     @GetMapping("/arrendatarios")
-    public List<DTOArrendatario> getAllArrendatarios() {
+    public List<DTOArrendatario> getAllArrendatarios(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
         return servicioArrendatario.getAllArrendatarios();
     }
 
     @GetMapping("/arrendatario/{id}")
-    public DTOArrendatario getArrendatario(@PathVariable Long id) {
+    public DTOArrendatario getArrendatario(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioArrendatario.getArrendatario(id);
     }
 
     @PostMapping("/crearArrendatario")
-    public DTOArrendatario crearArrendatario(@RequestBody DTOArrendatarioContrasena arrendatario) {
+    public DTOArrendatario crearArrendatario(Authentication authentication,
+            @RequestBody DTOArrendatarioContrasena arrendatario) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioArrendatario.createArrendatario(arrendatario);
     }
 
     @PutMapping("/actualizarArrendatario/{id}")
-    public DTOArrendatario actualizarArrendatario(@PathVariable Long id,
+    public DTOArrendatario actualizarArrendatario(Authentication authentication, @PathVariable Long id,
             @RequestBody DTOArrendatarioContrasena arrendatario) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioArrendatario.updateArrendatario(id, arrendatario);
     }
 
     @DeleteMapping("/eliminarArrendatario/{id}")
-    public ResponseEntity<String> eliminarArrendatario(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarArrendatario(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         try {
             servicioArrendatario.eliminarArrendatario(id);
             return ResponseEntity.ok("Arrendatario eliminado con éxito.");
