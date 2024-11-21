@@ -20,6 +20,7 @@ import com.arrienda.proyecto.dtos.DTOArrendadorContrasena;
 import com.arrienda.proyecto.servicios.ServicioArrendador;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/arrendador")
@@ -42,6 +43,20 @@ public class ControllerArrendador {
             return null;
         }
         return servicioArrendador.traerArrendador(id);
+    }
+
+    @GetMapping("/arrendador/arrendador-actual")
+    public DTOArrendador getArrendadorActual(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        DTOArrendador arrendador = servicioArrendador.autorizacion(authentication);
+        if (arrendador == null) {
+            return null;
+        }
+
+        return arrendador;
     }
 
     @PostMapping("/crearArrendador")
