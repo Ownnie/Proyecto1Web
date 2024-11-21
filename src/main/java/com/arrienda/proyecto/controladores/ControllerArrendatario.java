@@ -35,6 +35,20 @@ public class ControllerArrendatario {
         return servicioArrendatario.getArrendatario(id);
     }
 
+    @GetMapping("/arrendatario/arrendatario-actual")
+    public DTOArrendatario getArrendatarioActual(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        DTOArrendatario arrendatario = servicioArrendatario.autorizacion(authentication);
+        if (arrendatario == null) {
+            return null;
+        }
+
+        return arrendatario;
+    }
+
     @PostMapping("/crearArrendatario")
     public DTOArrendatario crearArrendatario(Authentication authentication,
             @RequestBody DTOArrendatarioContrasena arrendatario) {

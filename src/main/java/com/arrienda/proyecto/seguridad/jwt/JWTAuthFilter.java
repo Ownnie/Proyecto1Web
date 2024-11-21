@@ -35,7 +35,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().matches("/api/auth/register")
+        if (request.getServletPath().matches("/api/auth/register/arrendador")
+                || request.getServletPath().matches("/api/auth/register/arrendatario")
                 || request.getServletPath().matches("/api/auth/login")) {
             filterChain.doFilter(request, response);
         } else {
