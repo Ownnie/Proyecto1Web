@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,47 +27,77 @@ public class ControllerSolicitud {
     private ServicioSolicitud servicioSolicitud;
 
     @GetMapping("/solicitudes")
-    public List<DTOSolicitud> getAllSolicitudes() {
+    public List<DTOSolicitud> getAllSolicitudes(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.getAllSolicitudes();
     }
 
     @GetMapping("/solicitud/{id}")
-    public DTOSolicitud getSolicitud(@PathVariable Long id) {
+    public DTOSolicitud getSolicitud(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.getSolicitud(id);
     }
 
     @GetMapping("/solicitudes/estado/{estado}")
-    public List<DTOSolicitud> getSolicitudesByEstado(@PathVariable int estado) {
+    public List<DTOSolicitud> getSolicitudesByEstado(Authentication authentication, @PathVariable int estado) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.getSolicitudesByEstado(estado);
     }
 
     @GetMapping("/solicitudes/arrendatario/{arrendatarioId}")
-    public List<DTOSolicitud> getSolicitudesByArrendatarioId(@PathVariable Long arrendatarioId) {
+    public List<DTOSolicitud> getSolicitudesByArrendatarioId(Authentication authentication,
+            @PathVariable Long arrendatarioId) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.getSolicitudesByArrendatarioId(arrendatarioId);
     }
 
     @GetMapping("/solicitudes/propiedad/{propiedadId}")
-    public List<DTOSolicitud> getSolicitudesByPropiedadId(@PathVariable Long propiedadId) {
+    public List<DTOSolicitud> getSolicitudesByPropiedadId(Authentication authentication,
+            @PathVariable Long propiedadId) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.getSolicitudesByPropiedadId(propiedadId);
     }
 
     @PostMapping("/crearSolicitud")
-    public DTOSolicitud crearSolicitud(@RequestBody DTOSolicitud solicitud) {
+    public DTOSolicitud crearSolicitud(Authentication authentication, @RequestBody DTOSolicitud solicitud) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.crearSolicitud(solicitud);
     }
 
     @PutMapping("/actualizarSolicitud/{id}")
-    public DTOSolicitud actualizarSolicitud(@PathVariable Long id, @RequestBody DTOSolicitud solicitud) {
+    public DTOSolicitud actualizarSolicitud(Authentication authentication, @PathVariable Long id,
+            @RequestBody DTOSolicitud solicitud) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.actualizarSolicitud(id, solicitud);
     }
 
     @PutMapping("/aceptarSolicitud/{id}")
-    public DTOSolicitud aceptarSolicitud(@PathVariable Long id) {
+    public DTOSolicitud aceptarSolicitud(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         return servicioSolicitud.aceptarSolicitud(id);
     }
 
     @DeleteMapping("/eliminarSolicitud/{id}")
-    public ResponseEntity<String> eliminarSolicitud(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarSolicitud(Authentication authentication, @PathVariable Long id) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
         try {
             servicioSolicitud.eliminarSolicitud(id);
             return ResponseEntity.ok("Solicitud eliminada con éxito.");
